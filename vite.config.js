@@ -4,17 +4,22 @@ const __dirname = import.meta.dirname;
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    devSourcemap: true,
+  },
   build: {
     minify: false,
     emptyOutDir: false,
-    outDir: 'dist',
+    outDir: "dist",
     rollupOptions: {
-      input: path.resolve(__dirname, 'client/index.js'),
+      input: path.resolve(__dirname, "client/index.js"),
       output: {
-        entryFileNames: '[name].js',
-        chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]',
-      }
+        entryFileNames: "[name].js",
+        chunkFileNames: "[name].js",
+        assetFileNames: "[name].[ext]",
+      },
     },
   },
 });
+
+
