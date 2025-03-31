@@ -7,7 +7,7 @@ import sirv from "sirv";
 import { renderTemplate } from "./utils/renderTemplate.js";
 
 const data = {
-  beemdkroon: {
+  'beemdkroon': {
     id: "beemdkroon",
     name: "Beemdkroon",
     image: {
@@ -17,7 +17,7 @@ const data = {
       height: 1080,
     },
   },
-  "wilde-peen": {
+  'wilde-peen': {
     id: "wilde-peen",
     name: "Wilde Peen",
     image: {
@@ -67,5 +67,4 @@ app.get("/plant/:id/", async (req, res) => {
     return res.status(404).send("Not found");
   }
   return res.send(renderTemplate("detail.liquid", pageData));
-
 });
