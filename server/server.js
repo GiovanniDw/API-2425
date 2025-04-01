@@ -6,6 +6,9 @@ import sirv from "sirv";
 
 import { renderTemplate } from "./utils/renderTemplate.js";
 
+const PORT = process.env.PORT | 3000;
+
+
 const data = {
   'beemdkroon': {
     id: "beemdkroon",
@@ -35,15 +38,21 @@ const engine = new Liquid({
 
 const app = new App();
 
-app.engine("liquid", Liquid.renderFile);
+app.locals.title = "My App";
+app.locals.email = "me@myapp.com";
+
+app.engine("liquid", engine.express());
 
 app.set("views", "./views");
+
+app.set("view engine", "liquid");
+
 
 app
   .use(logger())
   .use("/", sirv("dist"))
-  .use("/", sirv("public"))
-  .listen(3000, () => console.log("Server available on http://localhost:3000"));
+  .use("/", sirv("public"));
+  
 
 app.get("/", async (req, res) => {
   const pageData = {
@@ -68,3 +77,6 @@ app.get("/plant/:id/", async (req, res) => {
   }
   return res.send(renderTemplate("detail.liquid", pageData));
 });
+
+
+app.listen(3000, () => console.log("Server available on http://localhost:3000"));

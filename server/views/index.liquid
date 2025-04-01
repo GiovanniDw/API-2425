@@ -1,17 +1,14 @@
-{% layout "server/views/layouts/base.liquid" %}
+{% layout "server/views/layouts/base.liquid" %} {% block content %}
 
-{% block content %}
-
-  <h1 class="h1">{{ title }}</h1>
-  <ul class="grid">
-    {% for item in items %}
-      <li>
-        <a href="/plant/{{ item.id }}">
-          {% render 'server/views/components/card/card.liquid'
-            , item: item %}
-        </a>
-      </li>
-    {% endfor %}
-  </ul>
+<h1 class="h1">{{ title }}</h1>
+<ul class="grid">
+  {% for item in items %}
+  <li>
+    <a href="/plant/{{ item.id }}">
+      {% render 'server/views/components/card/card.liquid', item: item %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
 
 {% endblock %}

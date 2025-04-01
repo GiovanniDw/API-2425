@@ -1,6 +1,6 @@
 /* global styles */
-@import 'reset.css';
-@import "typography.css";
+@import './reset.css';
+@import './typography.css';
 
 /*.layout and view styling */
 @import '../server/views/layouts/base.css';
@@ -8,10 +8,6 @@
 
 /* component styling */
 @import '../server/views/components/card/card.css';
-
-*, *:before, *::after {
-  box-sizing: border-box;
-}
 
 body {
   color: black;
