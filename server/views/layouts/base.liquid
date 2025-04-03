@@ -1,22 +1,21 @@
 <html lang="en">
+
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     {% block head %}
     <title>{{ title }}</title>
-    {% endblock %}
+    {% endblock %} 
     {% if NODE_ENV == "development" %}
     <script type="module" src="http://localhost:5173/@vite/client" defer></script>
-    <script type="module" src="http://localhost:5173/client/index.js" defer></script>
+    <script type="module" src="http://localhost:5173/src/index.js" defer></script>
     {% else %}
-    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/index.css" />
     <script src="/index.js" defer></script>
-    {% endif %}
-
-    {% block styles %}
-    {% endblock %}
-
-    {% block scripts %}
+    {% endif %} 
+    {% block styles %} 
+    {% endblock %} 
+    {% block scripts %} 
     {% endblock %}
   </head>
 
@@ -26,12 +25,8 @@
         <a href="/">Home</a>
       </nav>
     </header>
-    <main>
-      {% block content %}
-      {% endblock %}
-    </main>
-    <footer>
-      Deze footer staat op elke pagina
-    </footer>
+    <main>{% block content %} {% endblock %}</main>
+    <footer>Deze footer staat op elke pagina</footer>
   </body>
+
 </html>

@@ -38,12 +38,12 @@ const engine = new Liquid({
 
 const app = new App();
 
-app.locals.title = "My App";
-app.locals.email = "me@myapp.com";
+// app.locals.title = "My App";
+// app.locals.email = "me@myapp.com";
 
 app.engine("liquid", engine.express());
 
-app.set("views", "./views");
+app.set("views", "views");
 
 app.set("view engine", "liquid");
 

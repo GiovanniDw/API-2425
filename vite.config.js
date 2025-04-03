@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import path from 'node:path';
+import { fileURLToPath } from "node:url";
+
 const __dirname = import.meta.dirname;
 
 // https://vitejs.dev/config/
@@ -7,12 +9,19 @@ export default defineConfig({
   css: {
     devSourcemap: true,
   },
+  resolve: {
+    alias: {
+      "~": fileURLToPath(new URL("./src", import.meta.url)),
+      "~~": path.resolve(__dirname, "./"),
+      "@": path.resolve(__dirname, "./server"),
+    },
+  },
   build: {
     minify: false,
     emptyOutDir: false,
     outDir: "dist",
     rollupOptions: {
-      input: path.resolve(__dirname, "client/index.js"),
+      input: path.resolve(__dirname, "src/index.js"),
       output: {
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js",
@@ -21,5 +30,3 @@ export default defineConfig({
     },
   },
 });
-
-

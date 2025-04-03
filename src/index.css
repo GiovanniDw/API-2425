@@ -3,11 +3,11 @@
 @import './typography.css';
 
 /*.layout and view styling */
-@import '../server/views/layouts/base.css';
-@import '../server/views/index.css';
+@import '@/views/layouts/base.css';
+@import '@/views/index.css';
 
 /* component styling */
-@import '../server/views/components/card/card.css';
+@import '@/views/components/card/card.css';
 
 body {
   color: black;
