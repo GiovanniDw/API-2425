@@ -1,11 +1,11 @@
 import { Liquid } from "liquidjs";
-
-const engine = new Liquid({
-  extname: ".liquid",
-});
+import {engine} from '../server.js';
+// const engine = new Liquid({
+//   extname: ".liquid",
+// });
 
 export const renderTemplate = (template, data) => {
-const viewPath = `server/views/${template}`;
+const viewPath = `./views/${template}`;
 
 
   const templateData = {

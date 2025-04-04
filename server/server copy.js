@@ -1,5 +1,4 @@
 import 'dotenv/config'
-
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -7,9 +6,6 @@ import { App } from '@tinyhttp/app'
 import { logger } from '@tinyhttp/logger'
 import { Liquid } from 'liquidjs'
 import sirv from 'sirv'
-
-import { renderTemplate } from './utils/renderTemplate.js'
-
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -40,42 +36,44 @@ const data = {
   }
 }
 
+// Initialize Liquid engine
 export const engine = new Liquid({
   root: path.join(__dirname, '../views/'), // Set root directory for templates
   extname: '.liquid' // Set default file extension
 })
 
+// Create a TinyHTTP app
 const app = new App()
 
+// Middleware setup
 app.use(logger())
-app.use('/', sirv('dist'))
-app.use('/', sirv('public'))
+app.use('/', sirv('dist', { dev: true }))
+app.use('/', sirv('public', { dev: true }))
 
+// Custom render function to integrate LiquidJS
+function render(res, view, data) {
+  engine
+    .renderFile(view, data)
+    .then((html) => {
+      res.send(html)
+    })
+    .catch((err) => {
+      res.status(500).send(`Error rendering template: ${err.message}`)
+    })
+}
 
-// app.locals.title = "My App";
-// app.locals.email = "me@myapp.com";
-
-app.engine('liquid', engine.renderFile.bind(engine))
-
-app.set('views', path.join(__dirname, '../views/'))
-
-
-
-app.set('view engine', 'liquid')
-
-
-
-app.get('/', async (req, res) => {
+// Define routes
+app.get('/', (req, res) => {
   const pageData = {
     title: 'Home',
     items: Object.values(data)
   }
 
-return res.send(renderTemplate('index.liquid', pageData))
-
+  // Use the custom render function
+  return render(res, 'index', pageData)
 })
 
-app.get('/plant/:id/', async (req, res) => {
+app.get('/plant/:id/', (req, res) => {
   const id = req.params.id
   const item = data[id]
 
@@ -87,7 +85,10 @@ app.get('/plant/:id/', async (req, res) => {
   if (!item) {
     return res.status(404).send('Not found')
   }
-  return res.send(renderTemplate('detail.liquid', pageData))
+
+  // Use the custom render function
+  render(res, 'detail', pageData)
 })
 
+// Start the server
 app.listen(PORT, () => console.log(`Server available on ${BASE_URL}:${PORT}`))
