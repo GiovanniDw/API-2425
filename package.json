@@ -14,7 +14,8 @@
     "dev:server": "nodemon server/server.js --ext js,liquid",
     "prebuild": "npm run clean",
     "build": "npm-run-all build:*",
-    "build:client": "vite build"
+    "build:client": "vite build",
+    "format": "prettier --write src/ server/ views/"
   },
   "dependencies": {
     "@tinyhttp/app": "^2.5.2",

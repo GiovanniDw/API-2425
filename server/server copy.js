@@ -21,8 +21,8 @@ const data = {
       src: 'https://i.pinimg.com/736x/09/0a/9c/090a9c238e1c290bb580a4ebe265134d.jpg',
       alt: 'Beemdkroon',
       width: 695,
-      height: 1080
-    }
+      height: 1080,
+    },
   },
   'wilde-peen': {
     id: 'wilde-peen',
@@ -31,15 +31,15 @@ const data = {
       src: 'https://mens-en-gezondheid.infonu.nl/artikel-fotos/tom008/4251914036.jpg',
       alt: 'Wilde Peen',
       width: 418,
-      height: 600
-    }
-  }
+      height: 600,
+    },
+  },
 }
 
 // Initialize Liquid engine
 export const engine = new Liquid({
   root: path.join(__dirname, '../views/'), // Set root directory for templates
-  extname: '.liquid' // Set default file extension
+  extname: '.liquid', // Set default file extension
 })
 
 // Create a TinyHTTP app
@@ -66,7 +66,7 @@ function render(res, view, data) {
 app.get('/', (req, res) => {
   const pageData = {
     title: 'Home',
-    items: Object.values(data)
+    items: Object.values(data),
   }
 
   // Use the custom render function
@@ -79,7 +79,7 @@ app.get('/plant/:id/', (req, res) => {
 
   const pageData = {
     title: `Detail page for ${id}`,
-    item
+    item,
   }
 
   if (!item) {
