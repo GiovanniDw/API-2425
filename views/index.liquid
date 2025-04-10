@@ -1,7 +1,7 @@
 {% layout "layouts/base.liquid" %} {% block content %}
 
 <h1 class="h1">{{ title }}</h1>
-<ul class="grid">
+{% comment %} <ul class="grid">
   {% for item in items %}
   <li>
     <a href="/plant/{{ item.id }}">
@@ -9,6 +9,6 @@
     </a>
   </li>
   {% endfor %}
-</ul>
+</ul> {% endcomment %}
 
 {% endblock %}
