@@ -9,6 +9,8 @@ import { Liquid } from 'liquidjs'
 import sirv from 'sirv'
 
 import { renderTemplate, render } from './utils/renderTemplate.js'
+import {data} from './data.js';
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -16,35 +18,18 @@ const __dirname = path.dirname(__filename)
 const PORT = process.env.PORT || 3000
 const BASE_URL = process.env.BASE_URL || 'http://localhost'
 
-const data = {
-  beemdkroon: {
-    id: 'beemdkroon',
-    name: 'Beemdkroon',
-    image: {
-      src: 'https://i.pinimg.com/736x/09/0a/9c/090a9c238e1c290bb580a4ebe265134d.jpg',
-      alt: 'Beemdkroon',
-      width: 695,
-      height: 1080,
-    },
-  },
-  'wilde-peen': {
-    id: 'wilde-peen',
-    name: 'Wilde Peen',
-    image: {
-      src: 'https://mens-en-gezondheid.infonu.nl/artikel-fotos/tom008/4251914036.jpg',
-      alt: 'Wilde Peen',
-      width: 418,
-      height: 600,
-    },
-  },
-}
+
+export const app = new App()
 
 export const engine = new Liquid({
   root: path.join(__dirname, '../views/'), // Set root directory for templates
   extname: '.liquid', // Set default file extension
 })
 
-export const app = new App()
+app.engine('liquid', engine.renderFile.bind(engine))
+app.set('views', path.join(__dirname, '../views/'))
+app.set('view engine', 'liquid')
+
 
 app.use(logger())
 app.use('/', sirv('dist'))
@@ -53,19 +38,35 @@ app.use('/', sirv('public'))
 app.locals.node = process.env.NODE_ENV
 // app.locals.email = "me@myapp.com";
 
-app.engine('liquid', engine.renderFile.bind(engine))
 
-app.set('views', path.join(__dirname, '../views/'))
 
-app.set('view engine', 'liquid')
 
-app.get('/', async (req, res) => {
+app.get('/', async (req, res) => { 
   const pageData = {
     title: 'Home',
     items: Object.values(data),
   }
 
   return render(res, 'index', pageData)
+})
+
+
+app.get('/login', async (req, res) => {
+  const pageData = {
+    title: 'Login',
+    items: Object.values(data),
+  }
+
+  return render(res, 'login', pageData)
+})
+
+app.get('/register', async (req, res) => {
+  const pageData = {
+    title: 'Register',
+    items: Object.values(data),
+  }
+
+  return render(res, 'register', pageData)
 })
 
 app.get('/plant/:id/', async (req, res) => {
@@ -82,5 +83,15 @@ app.get('/plant/:id/', async (req, res) => {
   }
   return render(res, 'detail', pageData)
 })
+
+
+app.use((req, res, next) => {
+  // Make `user` and `authenticated` available in templates
+  res.locals.user = req.user
+  res.locals.authenticated = !req.user.anonymous
+  next()
+})
+
+
 
 app.listen(PORT, () => console.log(`Server available on ${BASE_URL}:${PORT}`))

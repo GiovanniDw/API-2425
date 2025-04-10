@@ -18,6 +18,7 @@ export const renderTemplate = (template, data) => {
 export function render(res, view, data) {
   const templateData = {
     NODE_ENV: app.locals.node || 'production',
+    locals: Object.values(app.locals),
     ...data,
   }
 

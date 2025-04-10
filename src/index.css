@@ -1,21 +1,29 @@
 /* global styles */
-@import './colors.css';
-@import './reset.css';
-@import './typography.css';
+@import '~/styles/colors.css';
+@import '~/styles/reset.css';
+@import '~/styles/typography.css';
+@import '~/styles/form.css';
 
 /*.layout and view styling */
 @import '~~/views/layouts/base.css';
-@import '~~/views/index.css';
 
 /* component styling */
 @import '~~/views/components/card/card.css';
 
 body {
-  color: black;
+  color: var(--color-black);
   max-width: 1440px;
   margin: 0 auto;
+  font-size: 16px;
 }
 
 main {
   padding: 1rem;
+}
+
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
