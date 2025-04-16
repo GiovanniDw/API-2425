@@ -22,6 +22,10 @@ export function render(res, view, data) {
     ...data,
   }
 
+console.log('render')
+console.log('view:', view)
+
+
   engine
     .renderFile(view, templateData)
     .then((html) => {

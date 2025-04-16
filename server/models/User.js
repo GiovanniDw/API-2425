@@ -1,11 +1,16 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
+import passportLocalMongoose from 'passport-local-mongoose'
+
 
 
 const UserSchema = new Schema({
   id: Number,
   name: String,
+  email: {
+    type: String,
+  },
   username: {
     type: String,
     required: true,
@@ -13,7 +18,8 @@ const UserSchema = new Schema({
   },
   password: String,
   admin: Boolean,
-});
+  info: Object
+})
 
 UserSchema.pre('save', async function (next) {
   const salt = await bcrypt.genSalt();
@@ -41,6 +47,8 @@ UserSchema.statics.login = async function (username, password) {
     throw Error('Incorrect email');
   }
 };
+
+UserSchema.plugin(passportLocalMongoose)
 
 const User = mongoose.model('User', UserSchema);
 export default User;

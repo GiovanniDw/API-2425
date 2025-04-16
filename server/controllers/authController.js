@@ -1,18 +1,20 @@
-export const register = async (req, res, next) => {
-  try {
-    let data = {
-      layout: 'base.njk',
-      title: 'Welcome',
-    }
+import {render} from '../utils/renderTemplate.js'
+import User from '../models/User.js';
 
-    res.render('register.njk', data)
-  } catch (err) {
-    let data = {
-      error: { message: err },
-      layout: 'base.njk',
+export const register = async (req, res, next) => {
+  let pageData = {
+      title: 'Register'
     }
-    res.render('register.njk', data)
-    next()
+  try {
+    
+    return render(res, 'register', pageData)
+  } catch (err) {
+     pageData = {
+      title: 'Register',
+      error: { message: err },
+    }
+  return  render(res, 'register', pageData)
+    
   }
 }
 
@@ -37,10 +39,50 @@ export const doRegister = (req, res, next) => {
           if (er) {
             res.json({ success: false, message: er })
           } else {
-            res.redirect('/course/start')
+            res.redirect('/')
           }
         })
       }
     }
   )
+}
+
+
+
+
+export const login = async (req, res, next) => {
+  // const { username, email, password, name, id } = req.body
+  let pageData = {
+    title: 'Login',
+  }
+  try {
+     render(res, 'login', pageData)
+     next()
+  } catch (err) {
+    pageData.error = { message: err }
+    render(res, 'login', pageData)
+    next(err)
+    
+  }
+}
+
+export const doLogin = (req, res, next) => {
+  const { username, email, password, name, id } = req.body
+  User.findByUsername(username, username, function (err, user) {
+    if (err) {
+      res.json({
+        success: false,
+        message: 'Can Not Login. Error: ' + err,
+      })
+    } else {
+      req.login(user, (er) => {
+        if (er) {
+          res.json({ success: false, message: er })
+        } else {
+          res.redirect('/')
+          next()
+        }
+      })
+    }
+  })
 }
