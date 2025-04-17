@@ -1,9 +1,7 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
-import bcrypt from 'bcryptjs';
+import mongoose from 'mongoose'
+const Schema = mongoose.Schema
+import bcrypt from 'bcryptjs'
 import passportLocalMongoose from 'passport-local-mongoose'
-
-
 
 const UserSchema = new Schema({
   id: Number,
@@ -18,37 +16,37 @@ const UserSchema = new Schema({
   },
   password: String,
   admin: Boolean,
-  info: Object
+  info: Object,
 })
 
 UserSchema.pre('save', async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
+  const salt = await bcrypt.genSalt()
+  this.password = await bcrypt.hash(this.password, salt)
 
-  next();
-});
+  next()
+})
 
 UserSchema.statics.login = async function (username, password) {
-  console.log('loginschema');
-  console.log(username + password);
-  let user = await this.findOne({ username });
+  console.log('loginschema')
+  console.log(username + password)
+  let user = await this.findOne({ username })
   if (user) {
-    console.log(user);
+    console.log(user)
     console.log('compare pass')
     console.log(password)
     console.log(user.password)
-    let isAuthenticated = await bcrypt.compare(password, user.password);
+    let isAuthenticated = await bcrypt.compare(password, user.password)
     if (isAuthenticated) {
-      return user;
+      return user
     } else {
-      throw Error('Incorrect password');
+      throw Error('Incorrect password')
     }
   } else {
-    throw Error('Incorrect email');
+    throw Error('Incorrect email')
   }
-};
+}
 
 UserSchema.plugin(passportLocalMongoose)
 
-const User = mongoose.model('User', UserSchema);
-export default User;
+const User = mongoose.model('User', UserSchema)
+export default User

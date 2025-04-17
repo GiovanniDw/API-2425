@@ -1,20 +1,18 @@
-import {render} from '../utils/renderTemplate.js'
-import User from '../models/User.js';
+import { render } from '../utils/renderTemplate.js'
+import User from '../models/User.js'
 
 export const register = async (req, res, next) => {
   let pageData = {
-      title: 'Register'
-    }
+    title: 'Register',
+  }
   try {
-    
     return render(res, 'register', pageData)
   } catch (err) {
-     pageData = {
+    pageData = {
       title: 'Register',
       error: { message: err },
     }
-  return  render(res, 'register', pageData)
-    
+    return render(res, 'register', pageData)
   }
 }
 
@@ -47,22 +45,18 @@ export const doRegister = (req, res, next) => {
   )
 }
 
-
-
-
 export const login = async (req, res, next) => {
   // const { username, email, password, name, id } = req.body
   let pageData = {
     title: 'Login',
   }
   try {
-     render(res, 'login', pageData)
-     next()
+    render(res, 'login', pageData)
+    next()
   } catch (err) {
     pageData.error = { message: err }
     render(res, 'login', pageData)
     next(err)
-    
   }
 }
 

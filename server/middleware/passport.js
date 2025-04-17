@@ -1,4 +1,4 @@
-import session from 'micro-session';
+import session from 'micro-session'
 import { cookieParser } from '@tinyhttp/cookie-parser'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
@@ -10,14 +10,13 @@ const newLocalStrategy = LocalStrategy.Strategy
 // const newMongoStore = MongoStore(session)
 
 export default function (app) {
-
   console.log('pass')
 
   app.use(cookieParser(process.env.SESSION_SECRET))
   // app.use(cookieSession({
   // 	keys: [process.env.SESSION_SECRET, 'key2']
   // }))
-    console.log('session')
+  console.log('session')
   app.use(
     session({
       // this should be changed to something cryptographically secure for production
@@ -131,7 +130,7 @@ export default function (app) {
   // only required if using sessions. this will add middleware from passport
   // that will serialize/deserialize the user from the session cookie and add
   // them to req.user
-    console.log('pass.session')
+  console.log('pass.session')
   app.use(passport.session())
 }
 

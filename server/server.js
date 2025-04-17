@@ -60,7 +60,6 @@ app.get('/', async (req, res, next) => {
   }
 
   try {
-    
     const pageData = {
       title: 'Home',
       items: Object.values(data),

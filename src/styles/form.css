@@ -1,14 +1,14 @@
 .form-group {
-  margin-bottom: .5rem;  
+  margin-bottom: 0.5rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: .25rem;
+  margin-bottom: 0.25rem;
 }
 
 .form-group input {
-display: block;
-font-si#000ze: 1em;
-color: aliceblue;
+  display: block;
+  font-si#000ze: 1em;
+  color: aliceblue;
 }
