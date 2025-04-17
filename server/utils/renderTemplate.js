@@ -15,7 +15,7 @@ export const renderTemplate = (template, data) => {
   return engine.renderFileSync(template, templateData)
 }
 
-export function render(res, view, data) {
+export async function render(res, view, data) {
   const templateData = {
     NODE_ENV: app.locals.node || 'production',
     locals: Object.values(app.locals),
