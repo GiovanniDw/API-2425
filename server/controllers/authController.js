@@ -35,29 +35,64 @@ const alertError = (err) => {
 
 
 export const register = async (req, res, next) => {
-
-  if (req.body) {
-  let { username, name, password } = req.body 
-  console.log(req.body)
+  
+if (req.body) {
+    console.log('req.body');
+    console.log(req.body);
   }
-  
 
-  
   let pageData = {
     title: 'Register',
   }
   try {
      render(res, 'register', pageData)
   } catch (err) {
-    pageData = {
+    let pageData = {
       title: 'Register',
       error: { message: err },
     }
-    return render(res, 'register', pageData)
+    render(res, 'register', pageData)
   }
 }
 
+export const doRegisterNo = async (req, res) => {
+  const { username, email, password, name, id } = req.body
+  User.register(
+    new User({
+      username: req.body.username,
+      email: req.body.username,
+      name: req.body.name,
+      id: id,
+    }),
+    password,
+    function (err, user) {
+      if (err) {
+        res.json({
+          success: false,
+          message: 'Your account could not be saved. Error: ' + err,
+        })
+      } else {
+        req.login(user, (er) => {
+          if (er) {
+            res.json({ success: false, message: er })
+          } else {
+            res.redirect('/')
+          }
+        })
+      }
+    }
+  )
+}
+
+
 export const doRegister = async (req, res, next) => {
+
+if (req.body) {
+  console.log('req.body')
+  console.log(req.body)
+}
+console.log('doRegister');
+
 
   let pageData = {
     title: 'Register',
@@ -68,13 +103,14 @@ export const doRegister = async (req, res, next) => {
   try {
     let newUser = {
       username: username,
+      email: username,
       name: name,
       password: password,
-    };
+    }
     console.log('newUser');
     console.log(newUser);
 
-    let user = await User.create({ username, name, password });
+    let user = await User.create(newUser);
     console.log('user');
     console.log(user);
 
@@ -83,13 +119,17 @@ export const doRegister = async (req, res, next) => {
     console.log(token);
     // create a cookie name as jwt and contain token and expire after 1 day
     // in cookies, expiration date calculate by milisecond
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    // res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     // res.status(201).json({ user });
 
-    return render(res, 'register', pageData)
+    res.redirect('/');
+    next()
   } catch (error) {
     let errors = alertError(error);
-    res.status(400).json({ errors });
+    console.log('errors');
+    console.log(errors);
+    // res.status(400).json({ errors });
+    next(error);
   }
 }
 
@@ -100,7 +140,6 @@ export const login = async (req, res, next) => {
   }
   try {
     render(res, 'login', pageData)
-    next()
   } catch (err) {
     pageData.error = { message: err }
     render(res, 'login', pageData)
@@ -108,9 +147,9 @@ export const login = async (req, res, next) => {
   }
 }
 
-export const doLogin = (req, res, next) => {
+export const doLogin = async (req, res, next) => {
   const { username, email, password, name, id } = req.body
-  User.findByUsername(username, username, function (err, user) {
+  User.findByUsername(username, password, function (err, user) {
     if (err) {
       res.json({
         success: false,
