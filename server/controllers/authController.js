@@ -129,7 +129,14 @@ console.log('doRegister');
     console.log('errors');
     console.log(errors);
     // res.status(400).json({ errors });
-    next(error);
+
+
+  let pageData = {
+    title: 'Register',
+    error: errors
+  }
+    render(res, 'register', pageData)
+    // next(error);
   }
 }
 

@@ -59,7 +59,7 @@ const CorsOptions = {
 
 app.use(logger())
 // app.use(json())
-// app.use(urlencoded())
+app.use(urlencoded())
 
 
 // app.use(async (req, res, next) => {
@@ -118,7 +118,7 @@ app.post('/login', doLogin)
 
 app.get('/register', register)
 
-app.use('/register', urlencoded())
+// app.use('/register', urlencoded())
 
 app.post('/register', doRegister)
 
