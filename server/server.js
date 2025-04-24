@@ -17,7 +17,7 @@ const getSession = nextSession();
 
 import { renderTemplate, render } from './utils/renderTemplate.js'
 import { data } from './data.js'
-import { doLogin, doRegister, login, register, isLoggedIn } from './controllers/authController.js'
+import { doLogin, doRegister, login, register, isLoggedIn, onboarding, doOnboarding } from './controllers/authController.js'
 import { chat } from './controllers/chatController.js'
 import passport from './config/passport.js'
 
@@ -122,18 +122,33 @@ app.post('/login', doLogin)
 app.get('/register', register)
 app.post('/register', doRegister)
 
-app.get('/logout', (req, res, next) => {
+app.get('/register/onboarding', onboarding)
+app.post('/register/onboarding', doOnboarding)
+
+app.post('/logout', (req, res) => {
     req.session.isLoggedIn = false
     req.session.user = null
-    app.locals.isLoggedIn = false
-    app.locals.user = null
-    res.clearCookie('session')
-
     
-    res.redirect('/')
+    res.clearCookie('session').redirect('/')
+
+
+    // return res.redirect('/login')
 })
 
 app.get('/chat', isLoggedIn, chat)
+
+app.get('/profile', async (req, res, next) => {
+  const pageData = {
+    title: 'Home',
+  }
+  try {
+    return render(req, res, 'index', pageData)
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
 
 // app.get('/plant/:id/', async (req, res) => {
 //   const id = req.params.id
@@ -161,7 +176,7 @@ app.use((err, req, res, next) => {
     }
     render(req, res, 'error', pageData)
   } else {
-    next(err)
+    next()
   }
 })
 
@@ -178,3 +193,4 @@ mongo()
     console.error('Unable to connect to mongo.')
     console.error(err)
   })
+

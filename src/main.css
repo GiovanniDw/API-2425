@@ -3,6 +3,7 @@
 @import '~/styles/reset.css';
 @import '~/styles/typography.css';
 @import '~/styles/form.css';
+@import '~/styles/chat.css';
 
 /*.layout and view styling */
 @import '~~/views/layouts/base.css';
@@ -12,7 +13,7 @@
 
 body {
   color: var(--color-black);
-  max-width: 1440px;
+  /* max-width: 1440px; */
   margin: 0 auto;
   font-size: 16px;
 }
@@ -25,4 +26,16 @@ main {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border: 1px solid black;
+  padding-bottom: --safe-area-inset-bottom;
 }

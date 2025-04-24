@@ -24,17 +24,15 @@
 
   <body>
     <header>
-
+      <nav>
+        <a href="/"><span class="icon">back</span>
+        Back
+        </a>
+      </nav>
     </header>
     <main>{% block content %} {% endblock %}</main>
     <footer>Deze footer staat op elke pagina
-
-      {% if app %}
-      {{ app }}
-      {% endif %}
-
     </footer>
-  {% render 'components/nav.liquid' %}
   </body>
 
 </html>

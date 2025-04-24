@@ -17,6 +17,8 @@ const UserSchema = new Schema({
   password: String,
   admin: Boolean,
   info: Object,
+  bio: String,
+  avatar: String,
 })
 
 UserSchema.pre('save', async function (next) {
@@ -24,6 +26,8 @@ UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt)
   next()
 })
+
+
 
 UserSchema.statics.login = async function (username, password) {
   console.log('loginschema')

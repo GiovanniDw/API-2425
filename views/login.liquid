@@ -1,7 +1,8 @@
-{% layout "layouts/base.liquid" %} {% block content %}
+{% layout "layouts/auth.liquid" %} {% block content %}
 
-<h1 class="h1">{{ title }}</h1>
+
 <form action="/login" method="POST" id="login-form">
+<h1 class="h1">{{ title }}</h1>
   <div class="form-group">
     <label for="username">Email</label>
     <input autocomplete="email" type="email" id="username" name="username"
@@ -19,7 +20,7 @@
     </div>
   </div>
   
-  <button type="submit" value="Login">Login</button>
+  <button class="btn" type="submit" value="Login">Login</button>
 
   <div>No Account yet? <a href="/register" class="link-inline">Create an account</a></div>
 

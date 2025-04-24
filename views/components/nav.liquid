@@ -1,0 +1,30 @@
+<nav class="main-nav">
+      <a class="nav-item" href="/">
+        <span class="icon">home</span>
+        Home
+      </a>
+      <a class="nav-item" href="/chat">
+        <span class="icon">forum</span>
+        Chat
+      </a>
+      {% if user != null %}
+      <a class="nav-item" href="/profile">
+        <span class="icon">account_circle</span>
+        profile
+      </a>
+      <a class="nav-item" href="/logout">
+        <span class="icon">logout</span>
+        logout
+      </a>
+      {% else %}
+      <a class="nav-item" href="/login">
+        <span class="icon">login</span>
+        Login
+      </a>
+      
+      
+        
+      {% endif %}
+
+
+    </nav>

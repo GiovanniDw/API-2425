@@ -23,3 +23,12 @@ nav {
   align-items: center;
   padding: 1rem;
 }
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  font-size: .75em;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-black);
+}
