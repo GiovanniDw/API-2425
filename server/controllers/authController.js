@@ -1,8 +1,11 @@
 import { render } from '../utils/renderTemplate.js'
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
-import { json } from 'milliparsec'
 
+import { app } from '../server.js'
+
+
+const maxAge = 24 * 60 * 60
 
 const createJWT = (id) => {
   return jwt.sign({ id }, 'chatroom secret', {
@@ -55,34 +58,7 @@ if (req.body) {
   }
 }
 
-export const doRegisterNo = async (req, res) => {
-  const { username, email, password, name, id } = req.body
-  User.register(
-    new User({
-      username: req.body.username,
-      email: req.body.username,
-      name: req.body.name,
-      id: id,
-    }),
-    password,
-    function (err, user) {
-      if (err) {
-        res.json({
-          success: false,
-          message: 'Your account could not be saved. Error: ' + err,
-        })
-      } else {
-        req.login(user, (er) => {
-          if (er) {
-            res.json({ success: false, message: er })
-          } else {
-            res.redirect('/')
-          }
-        })
-      }
-    }
-  )
-}
+
 
 
 export const doRegister = async (req, res, next) => {
@@ -142,7 +118,7 @@ console.log('doRegister');
 
 export const login = async (req, res, next) => {
   // const { username, email, password, name, id } = req.body
-  let pageData = {
+  const pageData = {
     title: 'Login',
   }
   try {
@@ -154,7 +130,42 @@ export const login = async (req, res, next) => {
   }
 }
 
-export const doLogin = async (req, res, next) => {
+
+export const doLogin = async (req, res) => {
+  const pageData = {
+    title: 'Login',
+  }
+  let { username, password, email } = req.body
+  console.log('doLogin')
+  console.log(req.body)
+  try {
+    let user = await User.login(username, password)
+    let token = createJWT(user._id)
+    console.log('user token')
+    console.log(token)
+
+    console.log(user)
+
+
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.status(201).redirect('/')
+
+    // res.redirect('/')
+
+
+  } catch (error) {
+    let errors = alertError(error)
+
+    pageData.error = errors
+    return render(res, 'login', pageData)
+    // res.status(400).json({ errors })
+  }
+}
+
+
+
+
+export const doLoginOLD = async (req, res, next) => {
   const { username, email, password, name, id } = req.body
   User.findByUsername(username, password, function (err, user) {
     if (err) {
@@ -173,4 +184,34 @@ export const doLogin = async (req, res, next) => {
       })
     }
   })
+}
+
+
+export const doRegisterNo = async (req, res) => {
+  const { username, email, password, name, id } = req.body
+  User.register(
+    new User({
+      username: req.body.username,
+      email: req.body.username,
+      name: req.body.name,
+      id: id,
+    }),
+    password,
+    function (err, user) {
+      if (err) {
+        res.json({
+          success: false,
+          message: 'Your account could not be saved. Error: ' + err,
+        })
+      } else {
+        req.login(user, (er) => {
+          if (er) {
+            res.json({ success: false, message: er })
+          } else {
+            res.redirect('/')
+          }
+        })
+      }
+    }
+  )
 }

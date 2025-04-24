@@ -45,7 +45,7 @@ UserSchema.statics.login = async function (username, password) {
   }
 }
 
-UserSchema.plugin(passportLocalMongoose)
+// UserSchema.plugin(passportLocalMongoose)
 
 const User = mongoose.model('User', UserSchema)
 export default User

@@ -94,6 +94,14 @@ app.locals.node = process.env.NODE_ENV
 // })
 
 app.get('/', async (req, res, next) => {
+  if (req.session) {
+    console.log('session:', req.session)
+  }
+
+
+
+
+
   console.log('home')
   if (req.user) {
     console.log('user:', req.user)
@@ -113,7 +121,7 @@ app.get('/', async (req, res, next) => {
 })
 
 app.get('/login', login)
-app.use('/login', urlencoded())
+// app.use('/login', urlencoded())
 app.post('/login', doLogin)
 
 app.get('/register', register)

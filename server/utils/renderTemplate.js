@@ -16,6 +16,13 @@ export const renderTemplate = (template, data) => {
 }
 
 export async function render(res, view, data) {
+console.log('app.locals')
+if (app.locals) {
+    console.log(app.locals)
+    console.log(res.locals)
+  }
+  
+
   const templateData = {
     NODE_ENV: app.locals.node || 'production',
     locals: Object.values(app.locals),
