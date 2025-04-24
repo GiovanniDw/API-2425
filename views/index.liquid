@@ -3,6 +3,12 @@
 <h1 class="h1">{{ title }}</h1>
 {% if locals %}
 <p>{{locals}}</p>  
+
+
+{% if user %}
+  <p>Hi {{ user.name }}</p>
+{% endif %}
+
 {% endif %}
 
 {% comment %} <ul class="grid">

@@ -6,19 +6,23 @@ import { fileURLToPath } from 'node:url'
 import { App } from '@tinyhttp/app'
 import { logger } from '@tinyhttp/logger'
 import { cors } from '@tinyhttp/cors'
+import { cookieParser } from '@tinyhttp/cookie-parser'
 import { Liquid } from 'liquidjs'
 import sirv from 'sirv'
-import getSession from 'next-session'
-import mongoose from 'mongoose'
+
 import { urlencoded, json, multipart } from 'milliparsec'
-import multer from 'multer'
+
+import nextSession from 'next-session'
+const getSession = nextSession();
 
 import { renderTemplate, render } from './utils/renderTemplate.js'
 import { data } from './data.js'
-import { doLogin, doRegister, login, register } from './controllers/authController.js'
+import { doLogin, doRegister, login, register, isLoggedIn } from './controllers/authController.js'
+import { chat } from './controllers/chatController.js'
 import passport from './config/passport.js'
 
 import mongo from './middleware/mongo.js'
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -41,7 +45,9 @@ console.log('DB_URL:', DB_URL)
 export const app = new App({
   settings: {
     networkExtensions: true,
-    bindAppToReqRes:true,
+    bindAppToReqRes: true,
+    enableReqRoute: true,
+
   },
 })
 
@@ -61,13 +67,17 @@ app.use(logger())
 // app.use(json())
 app.use(urlencoded())
 
-
 // app.use(async (req, res, next) => {
 //   req.session = await getSession({
 //     secret: sessionSecret,
 //   })(req, res)
 //   next()
 // })
+
+app.use(async (req, res, next) => {
+  await getSession(req, res) // session is set to req.session
+  next()
+})
 
 export const engine = new Liquid({
   root: path.join(__dirname, '../views/'), // Set root directory for templates
@@ -94,26 +104,12 @@ app.locals.node = process.env.NODE_ENV
 // })
 
 app.get('/', async (req, res, next) => {
-  if (req.session) {
-    console.log('session:', req.session)
+  const pageData = {
+    title: 'Home',
+    items: Object.values(data),
   }
-
-
-
-
-
-  console.log('home')
-  if (req.user) {
-    console.log('user:', req.user)
-  }
-
   try {
-    const pageData = {
-      title: 'Home',
-      items: Object.values(data),
-    }
-
-   return  render(res, 'index', pageData)
+    return render(req, res, 'index', pageData)
   } catch (error) {
     console.log(error)
     next(error)
@@ -121,60 +117,52 @@ app.get('/', async (req, res, next) => {
 })
 
 app.get('/login', login)
-// app.use('/login', urlencoded())
 app.post('/login', doLogin)
 
 app.get('/register', register)
-
-// app.use('/register', urlencoded())
-
 app.post('/register', doRegister)
+
+app.get('/logout', (req, res, next) => {
+    req.session.isLoggedIn = false
+    req.session.user = null
+    app.locals.isLoggedIn = false
+    app.locals.user = null
+    res.clearCookie('session')
+
+    
+    res.redirect('/')
+})
+
+app.get('/chat', isLoggedIn, chat)
 
 // app.get('/plant/:id/', async (req, res) => {
 //   const id = req.params.id
 //   const item = data[id]
-
 //   const pageData = {
 //     title: `Detail page for ${id}`,
 //     item,
 //   }
-
 //   if (!item) {
 //     return res.status(404).send('Not found')
 //   }
 //   return render(res, 'detail', pageData)
 // })
 
-// app.use((req, res, next) => {
-//   console.log('Make `user` and `authenticated` available in templates')
-//   // Make `user` and `authenticated` available in templates
-//   res.locals.user = req.user
-//   res.locals.authenticated = !req.user.anonymous
-//   next()
-// })
-
-app.use((req, res, next) => {
-  // Make `user` and `authenticated` available in templates
-  res.locals.user = req.user
-  res.locals.authenticated = !req.user.anonymous
-  next()
-})
 
 app.use((err, req, res, next) => {
-
-if (err.status) {
-  res.status(err.status || 500)
-const pageData = {
-    title: 'Error',
-    error: {
-      message: err.message,
-      status: err.status,
-    },
+  if (err.status) {
+    res.status(err.status || 500)
+    const pageData = {
+      title: 'Error',
+      error: {
+        message: err.message,
+        status: err.status,
+      },
+    }
+    render(req, res, 'error', pageData)
+  } else {
+    next(err)
   }
-  render(res, 'error', pageData)
-} else {
-  next(err)
-}
 })
 
 mongo()

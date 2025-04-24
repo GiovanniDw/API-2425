@@ -4,7 +4,6 @@ import User from '../models/User.js'
 
 import { app } from '../server.js'
 
-
 const maxAge = 24 * 60 * 60
 
 const createJWT = (id) => {
@@ -36,46 +35,38 @@ const alertError = (err) => {
   return errors
 }
 
-
 export const register = async (req, res, next) => {
-  
-if (req.body) {
-    console.log('req.body');
-    console.log(req.body);
+  if (req.body) {
+    console.log('req.body')
+    console.log(req.body)
   }
 
   let pageData = {
     title: 'Register',
   }
   try {
-     render(res, 'register', pageData)
+    render(req, res, 'register', pageData)
   } catch (err) {
     let pageData = {
       title: 'Register',
       error: { message: err },
     }
-    render(res, 'register', pageData)
+    render(req, res, 'register', pageData)
   }
 }
 
-
-
-
 export const doRegister = async (req, res, next) => {
-
-if (req.body) {
-  console.log('req.body')
-  console.log(req.body)
-}
-console.log('doRegister');
-
+  if (req.body) {
+    console.log('req.body')
+    console.log(req.body)
+  }
+  console.log('doRegister')
 
   let pageData = {
     title: 'Register',
   }
-  console.log('reqbody 1');
-  console.log(req.body);
-  let { username, name, password } = req.body;
+  
+  let { username, name, password } = req.body
   try {
     let newUser = {
       username: username,
@@ -83,84 +74,126 @@ console.log('doRegister');
       name: name,
       password: password,
     }
-    console.log('newUser');
-    console.log(newUser);
+  
 
-    let user = await User.create(newUser);
-    console.log('user');
-    console.log(user);
-
-    let token =  createJWT(user._id);
-    console.log('token');
-    console.log(token);
+    let user = await User.create(newUser)
+  
+    let token = createJWT(user._id)
+    console.log('token')
+    console.log(token)
     // create a cookie name as jwt and contain token and expire after 1 day
     // in cookies, expiration date calculate by milisecond
     // res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     // res.status(201).json({ user });
 
-    res.redirect('/');
-    next()
+    console.log('user')
+    console.log(user)
+
+    req.session.isLoggedIn = true
+    req.session.user = user
+
+    res.redirect('/')
   } catch (error) {
-    let errors = alertError(error);
-    console.log('errors');
-    console.log(errors);
+    let errors = alertError(error)
+    console.log('errors')
+    console.log(errors)
     // res.status(400).json({ errors });
 
-
-  let pageData = {
-    title: 'Register',
-    error: errors
-  }
-    render(res, 'register', pageData)
+    let pageData = {
+      title: 'Register',
+      error: errors,
+    }
+    render(req, res, 'register', pageData)
     // next(error);
   }
 }
 
 export const login = async (req, res, next) => {
+if (req.session.isLoggedIn) {
+  res.redirect('/chat')
+} 
+  if (req.params) {
+    console.log('req.params')
+    console.log(req.params)
+  }
+  if (req.session) {
+    console.log('session:', req.session)
+    console.log('session:req.session.user')
+    console.log(req.session.user)
+  }
   // const { username, email, password, name, id } = req.body
   const pageData = {
     title: 'Login',
   }
   try {
-    render(res, 'login', pageData)
+    render(req, res, 'login', pageData)
   } catch (err) {
     pageData.error = { message: err }
-    render(res, 'login', pageData)
+    render(req, res, 'login', pageData)
     next(err)
   }
 }
 
+export const isLoggedIn = async (req, res, next) => {
+  if (req.session.user || req.session.isLoggedIn) {
+    next()
+  } else {
+console.log('req.route.path')
+    console.log(req.route.path)
+    // const query = queryString.stringify({
+    //   url: req.originalUrl,
+    // })
+     //save the route/url the user wants to visit en make a querystring
+    // sends the user to the login page and adds the orignal url as query
+    res.status(403).redirect('/login?' + new URLSearchParams({ url: req.originalUrl })) 
+  }
+}
 
-export const doLogin = async (req, res) => {
+
+
+
+
+export const doLogin = async (req, res, next) => {
+  let { username, password } = req.body
+
   const pageData = {
     title: 'Login',
   }
-  let { username, password, email } = req.body
+
   console.log('doLogin')
   console.log(req.body)
   try {
-    let user = await User.login(username, password)
+    const user = await User.login(username, password)
     let token = createJWT(user._id)
     console.log('user token')
     console.log(token)
-
+    console.log('user')
     console.log(user)
 
+    if (user) {
+      req.session.isLoggedIn = true
+      req.session.user = user
 
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
-    res.status(201).redirect('/')
+      app.locals.isLoggedIn = true
+      app.locals.user = user
+    }
+
+    // res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    // req.session.isLoggedIn = true
+    // req.session.user = user
+    res.status(201).redirect(req.query.url || '/')
 
     // res.redirect('/')
-
-
   } catch (error) {
     let errors = alertError(error)
 
     pageData.error = errors
-    return render(res, 'login', pageData)
+    render(req, res, 'login', pageData)
+
     // res.status(400).json({ errors })
   }
 }
+
 
 
 
@@ -185,7 +218,6 @@ export const doLoginOLD = async (req, res, next) => {
     }
   })
 }
-
 
 export const doRegisterNo = async (req, res) => {
   const { username, email, password, name, id } = req.body

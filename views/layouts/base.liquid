@@ -8,7 +8,7 @@
     {% endblock %} 
     {% if NODE_ENV == "development" %}
     <script type="module" src="http://localhost:5173/@vite/client" defer></script>
-    <script type="module" src="http://localhost:5173/src/index.js" defer></script>
+    <script type="module" src="http://localhost:5173/src/main.js" defer></script>
     {% else %}
     <link rel="stylesheet" href="/index.css" />
     <script src="/index.js" defer></script>
@@ -23,14 +23,22 @@
     <header>
       <nav>
         <a href="/">Home</a>
-        <a href="/login">login</a>
+        
+
+    {% if user.name %}
+      <a href="/logout">Logout</a>
+    {% else %}
+      <a href="/login">Login</a>
+    {% endif %}
+
+        <a href="/chat">Chat</a>
       </nav>
     </header>
     <main>{% block content %} {% endblock %}</main>
     <footer>Deze footer staat op elke pagina
 
-    {% if locals %}
-      {{ locals }}
+    {% if app %}
+      {{ app }}
     {% endif %}
 
     </footer>

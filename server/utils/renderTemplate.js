@@ -15,17 +15,32 @@ export const renderTemplate = (template, data) => {
   return engine.renderFileSync(template, templateData)
 }
 
-export async function render(res, view, data) {
-console.log('app.locals')
-if (app.locals) {
-    console.log(app.locals)
-    console.log(res.locals)
+export async function render(req, res, view, data) {
+let user  
+let locals = {}
+  if (req.session && req.session.user) {
+    user = req.session.user
+  } else {
+    user = null
   }
-  
+
+  if (req.locals) {
+    locals = req.locals
+  }
+
+
+  if (req.session) {
+    console.log('session:', req.session)
+    console.log('session:req.session.user')
+    console.log(req.session.user)
+
+  }
 
   const templateData = {
     NODE_ENV: app.locals.node || 'production',
-    locals: Object.values(app.locals),
+    app: Object.values(app.locals),
+    locals: Object.values(locals),
+    user: user,
     ...data,
   }
 
