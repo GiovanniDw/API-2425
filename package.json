@@ -43,7 +43,9 @@
     "passport-local-mongoose": "^8.0.0",
     "sirv": "^3.0.1",
     "socket.io": "^4.8.1",
-    "vite": "^6.2.5"
+    "tinyws": "^0.1.0",
+    "vite": "^6.2.5",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "rimraf": "^6.0.1"

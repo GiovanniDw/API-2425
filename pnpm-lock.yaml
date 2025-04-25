@@ -71,9 +71,15 @@ importers:
       socket.io:
         specifier: ^4.8.1
         version: 4.8.1
+      tinyws:
+        specifier: ^0.1.0
+        version: 0.1.0(ws@8.18.1)
       vite:
         specifier: ^6.2.5
         version: 6.2.5(@types/node@22.14.1)
+      ws:
+        specifier: ^8.18.1
+        version: 8.18.1
     devDependencies:
       rimraf:
         specifier: ^6.0.1
@@ -1597,6 +1603,12 @@ packages:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
 
+  tinyws@0.1.0:
+    resolution: {integrity: sha512-6WQ2FlFM7qm6lAXxeKnzsAEfmnBHz5W5EwonNs52V0++YfK1IoCCAWM429afcChFE9BFrDgOFnq7ligaWMsa/A==}
+    engines: {node: '>=12.4'}
+    peerDependencies:
+      ws: '>=8'
+
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
@@ -1762,6 +1774,18 @@ packages:
 
   ws@8.17.1:
     resolution: {integrity: sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  ws@8.18.1:
+    resolution: {integrity: sha512-RKW2aJZMXeMxVpnZ6bck+RswznaxmzdULiBr6KY7XkTnW8uvt0iT9H5DkHUChXrc+uurzwa0rVI16n/Xzjdz1w==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -3370,6 +3394,10 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
+  tinyws@0.1.0(ws@8.18.1):
+    dependencies:
+      ws: 8.18.1
+
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
@@ -3541,6 +3569,8 @@ snapshots:
   wrappy@1.0.2: {}
 
   ws@8.17.1: {}
+
+  ws@8.18.1: {}
 
   xtend@4.0.2: {}
 

@@ -129,7 +129,7 @@ app.post('/logout', (req, res) => {
     req.session.isLoggedIn = false
     req.session.user = null
     
-    res.clearCookie('session').redirect('/')
+  return  res.clearCookie('session').redirect('/')
 
 
     // return res.redirect('/login')
@@ -175,9 +175,7 @@ app.use((err, req, res, next) => {
       },
     }
     render(req, res, 'error', pageData)
-  } else {
-    next()
-  }
+  } 
 })
 
 mongo()

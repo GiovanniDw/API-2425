@@ -30,11 +30,11 @@
               <selectedcontent></selectedcontent>
             </button>
             <option value="">Please select an Icon</option>
-            <option value="home"><span class="icon">home</span>Home</option>
-            <option value="chat">chat</option>
-            <option value="group">group</option>
-            <option value="settings">settings</option>
-            <option value="favorite">favorite</option>
+            <option value="home"><span class="icon home-icon">home</span>Home</option>
+<option value="chat"><span class="icon chat-icon">chat</span>Chat</option>
+<option value="group"><span class="icon group-icon">group</span>Group</option>
+<option value="settings"><span class="icon settings-icon">settings</span>Settings</option>
+<option value="favorite"><span class="icon favorite-icon">favorite</span>Favorite</option>
             <!-- Add more Material Icons as needed -->
           </select>
           <span id="icon-preview" class="icon">home</span>
@@ -44,7 +44,7 @@
           <input type="text" id="description" name="room-description" placeholder="Room Description"
                  required>
         </div>
-        <button id="create-room">Create</button>
+        <button type="submit" id="create-room">Create</button>
         <button id="cancel">Cancel</button>
       </form>
     </dialog>
