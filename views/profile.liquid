@@ -1,8 +1,8 @@
 {% layout "layouts/base.liquid" %} {% block content %}
 
 <h1 class="h1">{{ title }}</h1>
-{% if locals %}
-<p>{{locals}}</p>  
+  {% if locals %}
+<p>{{locals}}</p>
 
 
 {% if user %}
@@ -10,6 +10,14 @@
 {% endif %}
 
 {% endif %}
+
+
+<form method="post" action="/logout">
+  <button class="nav-item" type="submit">
+    <span class="icon">logout</span>
+    logout
+  </button>
+</form>
 
 {% comment %} <ul class="grid">
   {% for item in items %}

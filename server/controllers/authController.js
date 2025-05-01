@@ -2,7 +2,7 @@ import { render } from '../utils/renderTemplate.js'
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
 
-import { addUserInfo } from '../utils/userUtil.js' 
+import { addUserInfo } from '../utils/userUtil.js'
 import { app } from '../server.js'
 
 const maxAge = 24 * 60 * 60
@@ -23,6 +23,10 @@ const alertError = (err) => {
   }
   if (err.message === 'Incorrect password') {
     errors.password = 'The password is incorrect!'
+  }
+  if (err.message === 'User already exists') {
+    errors.username = 'This email already registered'
+    return errors
   }
   if (err.code === 11000) {
     errors.username = 'This email already registered'
@@ -66,7 +70,7 @@ export const doRegister = async (req, res, next) => {
   let pageData = {
     title: 'Register',
   }
-  
+
   let { username, name, password } = req.body
   try {
     let newUser = {
@@ -75,10 +79,22 @@ export const doRegister = async (req, res, next) => {
       name: name,
       password: password,
     }
-  
+
+    const userExists = await User.findOne({ email: username })
+    if (userExists) {
+
+      throw new Error("User already exists")
+      // // pageData.error = { message: 'User already exists' };
+      
+      // pageData.error = { message: 'User already exists' }
+      // return render(req, res, 'register', pageData)
+    }
+
+
+
+
     let user = await User.create(newUser)
     let token = createJWT(user._id)
-  
 
     req.session.isLoggedIn = true
     req.session.user = user
@@ -88,15 +104,12 @@ export const doRegister = async (req, res, next) => {
     let errors = alertError(error)
     pageData.error = errors
     render(req, res, 'register', pageData)
-    }
-    
-    
-  
+  }
 }
 
 export const onboarding = async (req, res, next) => {
   if (!req.session.isLoggedIn) {
-  return res.redirect('/login')
+    return res.redirect('/login')
   }
 
   const pageData = {
@@ -118,31 +131,27 @@ export const doOnboarding = async (req, res, next) => {
   try {
     console.log('doOnboarding')
     const { _id } = req.session.user
-    
+
     console.log('req.user')
     console.log(req.user)
-    
 
     let { avatar, bio } = req.body
 
-    const thisUser = await User.findByIdAndUpdate(_id,{ bio: bio, avatar: avatar},{new: true})
+    const thisUser = await User.findByIdAndUpdate(_id, { bio: bio, avatar: avatar }, { new: true })
 
     // await addUserInfo(thisUser._id, avatar, bio)
-// req.session.user = thisUser
-console.log('thisUser')
-console.log(thisUser)
+    // req.session.user = thisUser
+    console.log('thisUser')
+    console.log(thisUser)
 
- req.session.user = thisUser;
- 
-    
+    req.session.user = thisUser
 
     res.redirect('/chat')
   } catch (err) {
-console.log('error')
-pageData.error = { message: err }
-render(req, res, 'onboarding', pageData)
-next(err)
-
+    console.log('error')
+    pageData.error = { message: err }
+    render(req, res, 'onboarding', pageData)
+    next(err)
   }
   // if (req.body) {
   //   console.log('req.body')
@@ -150,15 +159,12 @@ next(err)
   // }
 
   // const { username, email, password, name, id } = req.body
-
-  
 }
 
-
 export const login = async (req, res, next) => {
-if (req.session.isLoggedIn) {
-  return res.redirect('/chat')
-} 
+  if (req.session.isLoggedIn) {
+    return res.redirect('/chat')
+  }
   if (req.params) {
     console.log('req.params')
     console.log(req.params)
@@ -180,24 +186,31 @@ if (req.session.isLoggedIn) {
   }
 }
 
+export const isAuthenticated = async (req, res, next) => {
+  if (req.session.isLoggedIn) {
+    console.log('isAuthenticated')
+    console.log(req.session.user)
+    next()
+  } else {
+    console.log('isAuthenticated: not logged in')
+    return res.redirect('/login')
+  }
+}
+
 export const isLoggedIn = async (req, res, next) => {
   if (req.session.user || req.session.isLoggedIn) {
     next()
   } else {
-console.log('req.route.path')
+    console.log('req.route.path')
     console.log(req.route.path)
     // const query = queryString.stringify({
     //   url: req.originalUrl,
     // })
-     //save the route/url the user wants to visit en make a querystring
+    //save the route/url the user wants to visit en make a querystring
     // sends the user to the login page and adds the orignal url as query
-    return res.status(403).redirect('/login?' + new URLSearchParams({ url: req.originalUrl })) 
+    return res.status(403).redirect('/login?' + new URLSearchParams({ url: req.originalUrl }))
   }
 }
-
-
-
-
 
 export const doLogin = async (req, res, next) => {
   let { username, password } = req.body
