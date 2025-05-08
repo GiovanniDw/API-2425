@@ -137,6 +137,38 @@ app.post('/logout', (req, res) => {
 
 app.get('/chat', isLoggedIn, chat)
 
+app.post('/chat/create-room', isLoggedIn, async (req, res) => {   
+  const { name, icon, description } = req.body
+
+  console.log('req.body:', req.body)
+
+
+  console.log('roomName:', name)
+  if (!name) {
+    return res.status(400).send('Room name is required')
+  }
+
+
+  // Create a new chat room in the database
+  // const newRoom = await createChatRoom(roomName)
+  // return res.status(201).json(newRoom)
+})
+app.get('/chat/:roomId', isLoggedIn, async (req, res) => {
+  const { roomId } = req.params
+  console.log('roomId:', roomId)
+  if (!roomId) {
+    return res.status(400).send('Room ID is required')
+  }
+  // Fetch the chat room from the database
+  // const chatRoom = await getChatRoom(roomId)
+  // return res.status(200).json(chatRoom)
+}
+
+)
+
+
+
+
 app.get('/profile', async (req, res, next) => {
   const pageData = {
     title: 'Home',

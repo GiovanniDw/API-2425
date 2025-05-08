@@ -6,7 +6,7 @@
 @import '~/css/chat.css';
 
 /*.layout and view styling */
-@import '~~/views/layouts/base.css';
+@import '~/css/base.css';
 
 /* component styling */
 @import '~~/views/components/card/card.css';

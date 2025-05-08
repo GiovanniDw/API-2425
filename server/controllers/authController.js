@@ -138,7 +138,7 @@ export const doOnboarding = async (req, res, next) => {
     let { avatar, bio } = req.body
 
     const thisUser = await User.findByIdAndUpdate(_id, { bio: bio, avatar: avatar }, { new: true })
-
+    await thisUser.save()
     // await addUserInfo(thisUser._id, avatar, bio)
     // req.session.user = thisUser
     console.log('thisUser')
