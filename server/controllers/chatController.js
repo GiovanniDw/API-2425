@@ -39,3 +39,20 @@ export const chatSocket = async (req, res, next) => {
   }
 
 }
+
+
+export const createChatRoom = async (req, res) => {
+
+
+  const { name, icon, description } = req.body
+  console.log('req.body:', req.body)
+  console.log('roomName:', name)
+  if (!name) {
+    return res.status(400).send('Room name is required')
+  }
+
+  // Create a new chat room in the database
+  // const newRoom = await createChatRoom(roomName)
+  // return res.status(201).json(newRoom)
+
+}

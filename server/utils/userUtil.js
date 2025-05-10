@@ -28,3 +28,4 @@ export const addUserInfo = (userID, avatar, bio) => {
     }
   })
 }
+ 

@@ -39,6 +39,8 @@ UserSchema.statics.login = async function (username, password) {
     console.log(password)
     console.log(user.password)
     let isAuthenticated = await bcrypt.compare(password, user.password)
+    console.log('isAuthenticated')
+    console.log(isAuthenticated)
     if (isAuthenticated) {
       return user
     } else {

@@ -89,3 +89,7 @@ dialog header .close-dialog {
   padding: 0;
   border-radius: 100%;
 }
+
+.error {
+  color: red; 
+}

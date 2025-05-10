@@ -7,14 +7,18 @@ const __dirname = import.meta.dirname;
 // https://vitejs.dev/config/
 export default defineConfig({
   css: {
-    devSourcemap: true
+    devSourcemap: true,
+  },
+  server: {
+    port: 3000,
+    allowedHosts: true
   },
   resolve: {
     alias: {
       '~': path.resolve(__dirname, './src'),
       '~~': path.resolve(__dirname, './'),
-      '@': path.resolve(__dirname, './server')
-    }
+      '@': path.resolve(__dirname, './server'),
+    },
   },
   build: {
     minify: false,
@@ -25,8 +29,8 @@ export default defineConfig({
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]'
-      }
-    }
-  }
+        assetFileNames: '[name].[ext]',
+      },
+    },
+  },
 })

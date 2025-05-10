@@ -90,16 +90,16 @@ export const doRegister = async (req, res, next) => {
       // return render(req, res, 'register', pageData)
     }
 
+if (!userExists) {
+  let user = await User.create(newUser)
+  let token = createJWT(user._id)
 
+  req.session.isLoggedIn = true
+  req.session.user = user
 
+  res.redirect('/register/onboarding')
+}
 
-    let user = await User.create(newUser)
-    let token = createJWT(user._id)
-
-    req.session.isLoggedIn = true
-    req.session.user = user
-
-    res.redirect('/register/onboarding')
   } catch (error) {
     let errors = alertError(error)
     pageData.error = errors
@@ -153,12 +153,7 @@ export const doOnboarding = async (req, res, next) => {
     render(req, res, 'onboarding', pageData)
     next(err)
   }
-  // if (req.body) {
-  //   console.log('req.body')
-  //   console.log(req.body)
-  // }
 
-  // const { username, email, password, name, id } = req.body
 }
 
 export const login = async (req, res, next) => {
@@ -174,7 +169,7 @@ export const login = async (req, res, next) => {
     console.log('session:req.session.user')
     console.log(req.session.user)
   }
-  // const { username, email, password, name, id } = req.body
+  
   const pageData = {
     title: 'Login',
   }

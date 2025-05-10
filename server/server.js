@@ -18,11 +18,11 @@ const getSession = nextSession();
 import { renderTemplate, render } from './utils/renderTemplate.js'
 import { data } from './data.js'
 import { doLogin, doRegister, login, register, isLoggedIn, onboarding, doOnboarding } from './controllers/authController.js'
-import { chat } from './controllers/chatController.js'
+import { chat, createChatRoom } from './controllers/chatController.js'
 import passport from './config/passport.js'
 
 import mongo from './middleware/mongo.js'
-
+import {db} from './config/db.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -50,6 +50,7 @@ export const app = new App({
 
   },
 })
+
 
 const CorsOptions = {
   origin: '*',
@@ -84,7 +85,7 @@ export const engine = new Liquid({
   extname: '.liquid', // Set default file extension
 })
 
-const renderLiquid = (path, _, options, cb) => engine.renderFile(path, options, cb)
+// const renderLiquid = (path, _, options, cb) => engine.renderFile(path, options, cb)
 
 app.engine('liquid', engine.renderFile.bind(engine))
 app.set('views', path.join(__dirname, '../views/'))
@@ -128,8 +129,7 @@ app.post('/register/onboarding', doOnboarding)
 app.post('/logout', (req, res) => {
     req.session.isLoggedIn = false
     req.session.user = null
-    
-  return  res.clearCookie('session').redirect('/')
+  return  res.clearCookie('session').redirect('/login')
 
 
     // return res.redirect('/login')
@@ -137,26 +137,15 @@ app.post('/logout', (req, res) => {
 
 app.get('/chat', isLoggedIn, chat)
 
-app.post('/chat/create-room', isLoggedIn, async (req, res) => {   
-  const { name, icon, description } = req.body
-
-  console.log('req.body:', req.body)
+app.post('/chat/create-room', isLoggedIn, createChatRoom)
 
 
-  console.log('roomName:', name)
-  if (!name) {
-    return res.status(400).send('Room name is required')
-  }
-
-
-  // Create a new chat room in the database
-  // const newRoom = await createChatRoom(roomName)
-  // return res.status(201).json(newRoom)
-})
-app.get('/chat/:roomId', isLoggedIn, async (req, res) => {
-  const { roomId } = req.params
-  console.log('roomId:', roomId)
-  if (!roomId) {
+app.get('/chat/:id', isLoggedIn, async (req, res) => {
+    const id = req.params.id
+    console.log('id:', id)
+  // const { roomId } = req.params
+  // console.log('roomId:', roomId)
+  if (!id) {
     return res.status(400).send('Room ID is required')
   }
   // Fetch the chat room from the database
@@ -174,7 +163,7 @@ app.get('/profile', async (req, res, next) => {
     title: 'Home',
   }
   try {
-    return render(req, res, 'index', pageData)
+    return render(req, res, 'profile', pageData)
   } catch (error) {
     console.log(error)
     next(error)
@@ -209,6 +198,13 @@ app.use((err, req, res, next) => {
     render(req, res, 'error', pageData)
   } 
 })
+
+
+// app.listen(PORT, async () => {
+//   await db()
+//   console.log(`Server available on ${BASE_URL}:${PORT}`)
+// })
+
 
 mongo()
   .then(() => {
