@@ -7,11 +7,9 @@ const DB_URL_END = process.env.DB_URL_END
 
 const DB_URL = `${DB_URL_START}${DB_USER}:${DB_PASS}${DB_URL_END}`
 
-export const db = async () => {
+export const db = () => {
   try {
-    
-    const conn = await mongoose.connect(DB_URL)
-    mongoose.Promise = global.Promise
+    const conn =  mongoose.connect(DB_URL)
     console.log(`MongoDB Connected: ${conn.connection.host}`)
   } catch (error) {
     console.error(`Error: ${error.message}`)

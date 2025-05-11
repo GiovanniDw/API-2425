@@ -90,20 +90,20 @@ export const doRegister = async (req, res, next) => {
       // return render(req, res, 'register', pageData)
     }
 
-if (!userExists) {
+
   let user = await User.create(newUser)
   let token = createJWT(user._id)
 
   req.session.isLoggedIn = true
   req.session.user = user
 
-  res.redirect('/register/onboarding')
-}
+return  res.redirect('/register/onboarding')
+
 
   } catch (error) {
     let errors = alertError(error)
     pageData.error = errors
-    render(req, res, 'register', pageData)
+  return  render(req, res, 'register', pageData)
   }
 }
 

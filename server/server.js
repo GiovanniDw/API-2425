@@ -107,7 +107,6 @@ app.locals.node = process.env.NODE_ENV
 app.get('/', async (req, res, next) => {
   const pageData = {
     title: 'Home',
-    items: Object.values(data),
   }
   try {
     return render(req, res, 'index', pageData)
@@ -151,9 +150,7 @@ app.get('/chat/:id', isLoggedIn, async (req, res) => {
   // Fetch the chat room from the database
   // const chatRoom = await getChatRoom(roomId)
   // return res.status(200).json(chatRoom)
-}
-
-)
+})
 
 
 
@@ -200,10 +197,6 @@ app.use((err, req, res, next) => {
 })
 
 
-// app.listen(PORT, async () => {
-//   await db()
-//   console.log(`Server available on ${BASE_URL}:${PORT}`)
-// })
 
 
 mongo()
