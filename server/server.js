@@ -18,7 +18,7 @@ const getSession = nextSession();
 import { renderTemplate, render } from './utils/renderTemplate.js'
 import { data } from './data.js'
 import { doLogin, doRegister, login, register, isLoggedIn, onboarding, doOnboarding } from './controllers/authController.js'
-import { chat, createChatRoom } from './controllers/chatController.js'
+import { chat, createChatRoom, getChatRoom } from './controllers/chatController.js'
 import passport from './config/passport.js'
 
 import mongo from './middleware/mongo.js'
@@ -129,30 +129,11 @@ app.post('/logout', (req, res) => {
     req.session.isLoggedIn = false
     req.session.user = null
   return  res.clearCookie('session').redirect('/login')
-
-
-    // return res.redirect('/login')
 })
 
 app.get('/chat', isLoggedIn, chat)
-
 app.post('/chat/create-room', isLoggedIn, createChatRoom)
-
-
-app.get('/chat/:id', isLoggedIn, async (req, res) => {
-    const id = req.params.id
-    console.log('id:', id)
-  // const { roomId } = req.params
-  // console.log('roomId:', roomId)
-  if (!id) {
-    return res.status(400).send('Room ID is required')
-  }
-  // Fetch the chat room from the database
-  // const chatRoom = await getChatRoom(roomId)
-  // return res.status(200).json(chatRoom)
-})
-
-
+app.get('/chat/:id', isLoggedIn, getChatRoom)
 
 
 app.get('/profile', async (req, res, next) => {
@@ -199,17 +180,23 @@ app.use((err, req, res, next) => {
 
 
 
-mongo()
-  .then(() => {
-    console.log('mongo connected')
-    app.listen(PORT, () => {
-      console.log(`Server available on ${BASE_URL}:${PORT}`)
-    })
-  })
-  .catch((err) => {
-    // an error occurred connecting to mongo!
-    // log the error and exit
-    console.error('Unable to connect to mongo.')
-    console.error(err)
-  })
+// mongo()
+//   .then(() => {
+//     console.log('mongo connected')
+//     app.listen(PORT, () => {
+//       console.log(`Server available on ${BASE_URL}:${PORT}`)
+//     })
+//   })
+//   .catch((err) => {
+//     // an error occurred connecting to mongo!
+//     // log the error and exit
+//     console.error('Unable to connect to mongo.')
+//     console.error(err)
+//   })
 
+
+
+  app.listen(PORT, async () => {
+    await db()
+    console.log(`Server available on ${BASE_URL}:${PORT}`)
+  })

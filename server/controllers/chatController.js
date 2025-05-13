@@ -1,6 +1,9 @@
 import { render } from '../utils/renderTemplate.js'
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
+import Room from '../models/Room.js'; 
+import Message from '../models/Room.js' 
+
 
 export const chat = async (req, res, next) => {
   if (req.session) {
@@ -41,7 +44,7 @@ export const chatSocket = async (req, res, next) => {
 }
 
 
-export const createChatRoom = async (req, res) => {
+export const createChatRoom = async (req, res, next) => {
 
 
   const { name, icon, description } = req.body
@@ -55,4 +58,17 @@ export const createChatRoom = async (req, res) => {
   // const newRoom = await createChatRoom(roomName)
   // return res.status(201).json(newRoom)
 
+}
+
+
+export const getChatRoom = async (req, res, next) => {
+  const pageData = {
+    title: 'Home',
+  }
+  try {
+    return render(req, res, 'profile', pageData)
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
 }
