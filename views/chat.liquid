@@ -50,6 +50,28 @@
         <button id="cancel">Cancel</button>
       </form>
     </dialog>
+    <div id="room-list">
+
+    {{ rooms }}
+
+    {% for room in rooms %}
+    <li>
+      <a href="/chat/{{ room._id }}">
+        <span class="icon {{ room.icon }}">{{ room.icon }}</span>
+        <span class="room-name">{{ room }}</span>
+      </a>
+    </li>
+    {% endfor %}
+
+
+      {% for room in rooms %}
+      <div class="room">
+        <a href="/chat/{{ room._id }}">
+          <span class="icon {{ room.icon }}">{{ room.icon }}</span>
+          <span class="room-name">{{ room.name }}</span>
+        </a>
+      </div>
+      {% endfor %}
   </div>
 </section>
 <section>

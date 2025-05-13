@@ -196,7 +196,7 @@ app.use((err, req, res, next) => {
 
 
 
-  app.listen(PORT, async () => {
-    await db()
+  app.listen(PORT,() => {
+     db()
     console.log(`Server available on ${BASE_URL}:${PORT}`)
   })

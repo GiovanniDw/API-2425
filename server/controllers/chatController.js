@@ -11,11 +11,25 @@ export const chat = async (req, res, next) => {
     console.log('session:req.session.user')
     console.log(req.session.user)
   }
+let roomsList = []
+  let Rooms = await Room.find()
+  
+  
+
   // const { username, email, password, name, id } = req.body
-  const pageData = {
-    title: 'Chat',
-  }
+  
+
+
+
+let pageData = {
+  title: 'Chat',
+  rooms: Object.keys(roomsList),
+}
+
   try {
+    console.log('typeof Rooms')    
+console.log(typeof Rooms)
+    
     render(req, res, 'chat', pageData)
   } catch (err) {
     pageData.error = { message: err }
@@ -53,6 +67,28 @@ export const createChatRoom = async (req, res, next) => {
   if (!name) {
     return res.status(400).send('Room name is required')
   }
+try {
+
+  const roomExists = await Room.findOne({ name: name })
+  if (roomExists) {
+    throw new Error('Room Name already exists')
+    // // pageData.error = { message: 'User already exists' };
+
+    // pageData.error = { message: 'User already exists' }
+    // return render(req, res, 'register', pageData)
+  }
+
+
+  let newRoom = {
+    name: name,
+    icon:icon,
+    description: description,
+  }
+  let room = await Room.create(newRoom)
+} catch (err) {
+  next(err)
+}
+
 
   // Create a new chat room in the database
   // const newRoom = await createChatRoom(roomName)
