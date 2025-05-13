@@ -16,8 +16,8 @@ export const renderTemplate = (template, data) => {
 }
 
 export async function render(req, res, view, data) {
-let user  
-let locals = {}
+  let user
+  let locals = {}
   if (req.session && req.session.user) {
     user = req.session.user
   } else {
@@ -28,12 +28,10 @@ let locals = {}
     locals = req.locals
   }
 
-
   if (req.session) {
     console.log('session:', req.session)
     console.log('session:req.session.user')
     console.log(req.session.user)
-
   }
 
   const templateData = {

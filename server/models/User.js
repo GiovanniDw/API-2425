@@ -27,8 +27,6 @@ UserSchema.pre('save', async function (next) {
   next()
 })
 
-
-
 UserSchema.statics.login = async function (username, password) {
   console.log('loginschema')
   console.log(username + password)
@@ -40,7 +38,6 @@ UserSchema.statics.login = async function (username, password) {
     console.log(user.password)
     // let isAuthenticated = await bcrypt.compare(password, user.password)
     let isAuthenticated = user.password === password
-
 
     console.log('isAuthenticated')
     console.log(isAuthenticated)

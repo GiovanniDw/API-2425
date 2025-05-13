@@ -51,7 +51,7 @@ export default function (app) {
 
   passport.serializeUser(User.serializeUser())
   passport.deserializeUser(User.deserializeUser())
-  
+
   // initialize passport. this is required, after you set up passport but BEFORE you use passport.session (if using)
   console.log('pass.init')
   app.use(passport.initialize())
@@ -61,4 +61,3 @@ export default function (app) {
   console.log('pass.session')
   app.use(passport.session())
 }
-

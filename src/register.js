@@ -1,6 +1,5 @@
 // import {$, $$} from '~/utils.js'
 
-
 // const registerForm = $('#register-form')
 
 // console.log('registerForm')
@@ -38,7 +37,6 @@
 //       })
 //       const data = await res.json()
 
-      
 //       console.log('data')
 //       console.log(data)
 //       console.log(data.user)
@@ -52,7 +50,7 @@
 //       if (data.user) {
 //         // this.state.setAuth(isLoggedIn)
 //         // setState({ user: data.user, isLoggedIn: true })
-        
+
 //         registerError.innerHTML = /*html*/ `
 //             <p>Welcome ${user.name}</p>
 //             `

@@ -1,4 +1,4 @@
-import {$,$$} from '~/utils.js';  
+import { $, $$ } from '~/utils.js'
 
 const dialog = $('#create-room-dialog')
 const showButton = $('#create-room')
@@ -13,5 +13,3 @@ showButton.addEventListener('click', () => {
 closeButton.addEventListener('click', () => {
   dialog.close()
 })
-
-

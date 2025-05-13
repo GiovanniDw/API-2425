@@ -13,16 +13,24 @@ import sirv from 'sirv'
 import { urlencoded, json, multipart } from 'milliparsec'
 
 import nextSession from 'next-session'
-const getSession = nextSession();
+const getSession = nextSession()
 
 import { renderTemplate, render } from './utils/renderTemplate.js'
 import { data } from './data.js'
-import { doLogin, doRegister, login, register, isLoggedIn, onboarding, doOnboarding } from './controllers/authController.js'
+import {
+  doLogin,
+  doRegister,
+  login,
+  register,
+  isLoggedIn,
+  onboarding,
+  doOnboarding,
+} from './controllers/authController.js'
 import { chat, createChatRoom, getChatRoom } from './controllers/chatController.js'
 import passport from './config/passport.js'
 
 import mongo from './middleware/mongo.js'
-import {db} from './config/db.js'
+import { db } from './config/db.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -47,10 +55,8 @@ export const app = new App({
     networkExtensions: true,
     bindAppToReqRes: true,
     enableReqRoute: true,
-
   },
 })
-
 
 const CorsOptions = {
   origin: '*',
@@ -126,15 +132,14 @@ app.get('/register/onboarding', onboarding)
 app.post('/register/onboarding', doOnboarding)
 
 app.post('/logout', (req, res) => {
-    req.session.isLoggedIn = false
-    req.session.user = null
-  return  res.clearCookie('session').redirect('/login')
+  req.session.isLoggedIn = false
+  req.session.user = null
+  return res.clearCookie('session').redirect('/login')
 })
 
 app.get('/chat', isLoggedIn, chat)
 app.post('/chat/create-room', isLoggedIn, createChatRoom)
 app.get('/chat/:id', isLoggedIn, getChatRoom)
-
 
 app.get('/profile', async (req, res, next) => {
   const pageData = {
@@ -147,7 +152,6 @@ app.get('/profile', async (req, res, next) => {
     next(error)
   }
 })
-
 
 // app.get('/plant/:id/', async (req, res) => {
 //   const id = req.params.id
@@ -162,7 +166,6 @@ app.get('/profile', async (req, res, next) => {
 //   return render(res, 'detail', pageData)
 // })
 
-
 app.use((err, req, res, next) => {
   if (err.status) {
     res.status(err.status || 500)
@@ -174,11 +177,8 @@ app.use((err, req, res, next) => {
       },
     }
     render(req, res, 'error', pageData)
-  } 
+  }
 })
-
-
-
 
 // mongo()
 //   .then(() => {
@@ -194,9 +194,7 @@ app.use((err, req, res, next) => {
 //     console.error(err)
 //   })
 
-
-
-  app.listen(PORT,() => {
-     db()
-    console.log(`Server available on ${BASE_URL}:${PORT}`)
-  })
+app.listen(PORT, () => {
+  db()
+  console.log(`Server available on ${BASE_URL}:${PORT}`)
+})

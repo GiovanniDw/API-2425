@@ -3,7 +3,6 @@ select,
   appearance: base-select;
 }
 
-
 h2 {
   font-size: 1.2rem;
 }
@@ -84,7 +83,7 @@ option:checked {
 option::checkmark {
   order: 1;
   margin-left: auto;
-  content: "☑️";
+  content: '☑️';
 }
 ::picker(select) {
   opacity: 0;

@@ -13,8 +13,7 @@ export const db = () => {
       dbName: process.env.DB_NAME,
     })
 
-    mongoose
-      .connection
+    mongoose.connection
       .once('open', () => {
         console.log('MongoDB Connected')
       })

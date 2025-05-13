@@ -82,28 +82,24 @@ export const doRegister = async (req, res, next) => {
 
     const userExists = await User.findOne({ email: username })
     if (userExists) {
-
-      throw new Error("User already exists")
+      throw new Error('User already exists')
       // // pageData.error = { message: 'User already exists' };
-      
+
       // pageData.error = { message: 'User already exists' }
       // return render(req, res, 'register', pageData)
     }
 
+    let user = await User.create(newUser)
+    let token = createJWT(user._id)
 
-  let user = await User.create(newUser)
-  let token = createJWT(user._id)
+    req.session.isLoggedIn = true
+    req.session.user = user
 
-  req.session.isLoggedIn = true
-  req.session.user = user
-
-return  res.redirect('/register/onboarding')
-
-
+    return res.redirect('/register/onboarding')
   } catch (error) {
     let errors = alertError(error)
     pageData.error = errors
-  return  render(req, res, 'register', pageData)
+    return render(req, res, 'register', pageData)
   }
 }
 
@@ -153,7 +149,6 @@ export const doOnboarding = async (req, res, next) => {
     render(req, res, 'onboarding', pageData)
     next(err)
   }
-
 }
 
 export const login = async (req, res, next) => {
@@ -169,7 +164,7 @@ export const login = async (req, res, next) => {
     console.log('session:req.session.user')
     console.log(req.session.user)
   }
-  
+
   const pageData = {
     title: 'Login',
   }
