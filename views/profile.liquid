@@ -1,32 +1,21 @@
 {% layout "layouts/base.liquid" %} {% block content %}
 
 <h1 class="h1">{{ title }}</h1>
-  {% if locals %}
-<p>{{locals}}</p>
-
 
 {% if user %}
-  <p>Hi {{ user.name }}</p>
+  <div>
+    <img src="{{ user.avatar }}" alt="User Avatar" class="avatar">
+    <h2 class="h2">User Info</h2>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+  </div>
+
+  <form method="post" action="/logout">
+    <button class="nav-item" type="submit">
+      <span class="icon">logout</span>
+      logout
+    </button>
+  </form>
 {% endif %}
-
-{% endif %}
-
-
-<form method="post" action="/logout">
-  <button class="nav-item" type="submit">
-    <span class="icon">logout</span>
-    logout
-  </button>
-</form>
-
-{% comment %} <ul class="grid">
-  {% for item in items %}
-  <li>
-    <a href="/plant/{{ item.id }}">
-      {% render 'components/card/card.liquid', item: item %}
-    </a>
-  </li>
-  {% endfor %}
-</ul> {% endcomment %}
 
 {% endblock %}

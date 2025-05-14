@@ -101,3 +101,16 @@ option::checkmark {
   top: calc(anchor(bottom) + 1px);
   left: anchor(10%);
 }
+
+
+#room-list a.active {
+  font-weight: bold;
+  background: #000;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1em;
+  height: auto;
+}

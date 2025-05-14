@@ -1,6 +1,5 @@
 {% layout "layouts/auth.liquid" %} {% block content %}
 
-
 <form action="/login" method="POST" id="login-form">
   <h1 class="h1">{{ title }}</h1>
   <div class="form-group">
@@ -19,11 +18,7 @@
       {{ error.password }}
     </div>
   </div>
-
   <button class="btn" type="submit" value="Login">Login</button>
-
   <div>No Account yet? <a href="/register" class="link-inline">Create an account</a></div>
-
 </form>
-
 {% endblock %}

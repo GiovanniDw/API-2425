@@ -2,16 +2,13 @@ import 'dotenv/config'
 
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-
 import { App } from '@tinyhttp/app'
 import { logger } from '@tinyhttp/logger'
 import { cors } from '@tinyhttp/cors'
 import { cookieParser } from '@tinyhttp/cookie-parser'
 import { Liquid } from 'liquidjs'
 import sirv from 'sirv'
-
 import { urlencoded, json, multipart } from 'milliparsec'
-
 import nextSession from 'next-session'
 const getSession = nextSession()
 
@@ -25,9 +22,10 @@ import {
   isLoggedIn,
   onboarding,
   doOnboarding,
+  profile,
+  logout,
 } from './controllers/authController.js'
 import { chat, createChatRoom, getChatRoom } from './controllers/chatController.js'
-import passport from './config/passport.js'
 
 import mongo from './middleware/mongo.js'
 import { db } from './config/db.js'
@@ -124,34 +122,17 @@ app.get('/', async (req, res, next) => {
 
 app.get('/login', login)
 app.post('/login', doLogin)
-
 app.get('/register', register)
 app.post('/register', doRegister)
-
 app.get('/register/onboarding', onboarding)
 app.post('/register/onboarding', doOnboarding)
-
-app.post('/logout', (req, res) => {
-  req.session.isLoggedIn = false
-  req.session.user = null
-  return res.clearCookie('session').redirect('/login')
-})
+app.post('/logout', logout)
+app.get('/profile', isLoggedIn, profile)
 
 app.get('/chat', isLoggedIn, chat)
 app.post('/chat/create-room', isLoggedIn, createChatRoom)
 app.get('/chat/:id', isLoggedIn, getChatRoom)
 
-app.get('/profile', async (req, res, next) => {
-  const pageData = {
-    title: 'Home',
-  }
-  try {
-    return render(req, res, 'profile', pageData)
-  } catch (error) {
-    console.log(error)
-    next(error)
-  }
-})
 
 // app.get('/plant/:id/', async (req, res) => {
 //   const id = req.params.id
@@ -176,7 +157,7 @@ app.use((err, req, res, next) => {
         status: err.status,
       },
     }
-    render(req, res, 'error', pageData)
+  return render(req, res, 'error', pageData)
   }
 })
 

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
 import Room from '../models/Room.js'
 import Message from '../models/Room.js'
+import { getChatRoomById, getChatRoomsList } from '../utils/chatUtil.js'
 
 export const chat = async (req, res, next) => {
   if (req.session) {
@@ -10,18 +11,18 @@ export const chat = async (req, res, next) => {
     console.log('session:req.session.user')
     console.log(req.session.user)
   }
-  const roomsList = []
+  const roomsList = await getChatRoomsList()
 
-  await Room.find({}).then((rooms) => {
-    rooms.forEach((room) => {
-      roomsList.push({
-        id: room._id,
-        name: room.name,
-        icon: room.icon,
-        description: room.description,
-      })
-    })
-  })
+  // await Room.find({}).then((rooms) => {
+  //   rooms.forEach((room) => {
+  //     roomsList.push({
+  //       id: room._id,
+  //       name: room.name,
+  //       icon: room.icon,
+  //       description: room.description,
+  //     })
+  //   })
+  // })
 
   // const { username, email, password, name, id } = req.body
 
@@ -90,11 +91,15 @@ export const createChatRoom = async (req, res, next) => {
 }
 
 export const getChatRoom = async (req, res, next) => {
+  const roomsList = await getChatRoomsList()
   const id = req.params.id
-  const room = await Room.findById(id)
-  const pageData = {
+  const room = await getChatRoomById(id)
+  console.log('room:', room)
+  let pageData = {
     title: room.name,
-    room: room,
+    room: roomsList[id],
+    rooms: roomsList,
+    slug: String(id)
   }
   try {
     if (!room) {

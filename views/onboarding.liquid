@@ -6,8 +6,6 @@
 <script type="module" src="http://localhost:5173/src/register.js" defer></script> {% endcomment %}
 {% endblock %}
 
-
-
 <form action="/register/onboarding" id="onboarding-form" method="POST">
 <h1 class="h1">{{ title }}</h1>
 <p>Welcome {{ user.name }}!</p>
@@ -22,11 +20,7 @@
     <input  type="text" id="bio" name="bio"
            placeholder="Tell us something about u!">
   </div>
-  
-  
   <button type="submit">Save Profile!</button>
-
-
 </form>
 
 {% endblock %}

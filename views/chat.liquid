@@ -7,7 +7,8 @@
 {% endblock %}
 
 <h1 class="h1">{{ title }}</h1>
-<section>
+<div class="split"> 
+<section class="rooms">
   <div id="rooms">
     <button id="create-room">
       Create A Room
@@ -34,54 +35,59 @@
             <option value="home"><span class="icon home-icon">home</span>Home</option>
             <option value="chat"><span class="icon chat-icon">chat</span>Chat</option>
             <option value="group"><span class="icon group-icon">group</span>Group</option>
-            <option value="settings"><span class="icon settings-icon">settings</span>Settings</option>
-            <option value="favorite"><span class="icon favorite-icon">favorite</span>Favorite</option>
+            <option value="settings"><span class="icon settings-icon">settings</span>Settings
+            </option>
+            <option value="favorite"><span class="icon favorite-icon">favorite</span>Favorite
+            </option>
             <!-- Add more Material Icons as needed -->
           </select>
           <span id="icon-preview" class="icon">home</span>
         </div>
         <div class="form-group">
           <label for="description">Room Description</label>
-          <textarea id="description" name="description" placeholder="Room Description"
-                    required cols="40"></textarea>
-        
+          <textarea id="description" name="description" placeholder="Room Description" required
+                    cols="40"></textarea>
+
         </div>
         <button type="submit" id="create-room">Create</button>
         <button id="cancel">Cancel</button>
       </form>
     </dialog>
     <div id="room-list">
-
-    {{ rooms }}
-
-    {% for room in rooms %}
-    <li>
-      <a href="/chat/{{ room.id }}">
-        <span class="icon {{ room.icon }}">{{ room.icon }}</span>
-        <span class="room-name">{{ room.name }}</span>
-      </a>
-    </li>
-    {% endfor %}
-
-
-      {% for room in rooms %}
-      <div class="room">
-        <a href="/chat/{{ room.id }}">
-          <span class="icon {{ room.icon }}">{{ room.icon }}</span>
-          <span class="room-name">{{ room.name }}</span>
-        </a>
-      </div>
-      {% endfor %}
-  </div>
+      <ul>
+        {% for chat in rooms %}
+        <li>
+          {% if slug %}
+            {% if chat.id == slug %}
+            <a class="active" href="/chat/{{ chat.id }}">
+              <span class="icon {{ chat.icon }}">{{ chat.icon }}</span>
+              <span class="room-name">{{ chat.name }}</span>
+            </a>
+            {% else %}
+            <a href="/chat/{{ chat.id }}">
+              <span class="icon {{ chat.icon }}">{{ chat.icon }}</span>
+              <span class="room-name">{{ chat.name }}</span>
+            </a>
+            {% endif %}
+          {% else %}
+          <a href="/chat/{{ chat.id }}">
+            <span class="icon {{ chat.icon }}">{{ chat.icon }}</span>
+            <span class="room-name">{{ chat.name }}</span>
+          </a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
 </section>
-<section>
-  {% comment %} <div class="chat-container"></div>
+<section class="chat">
+   <div class="chat-container"></div>
   <div>
     <form action="">
       <input type="text"><button>send</button>
 
     </form>
-  </div> {% endcomment %}
+  </div> 
 </section>
-
+</div>
 {% endblock %}

@@ -42,7 +42,7 @@ const alertError = (err) => {
 
 export const register = async (req, res, next) => {
   if (req.body) {
-    console.log('req.body')
+    console.log('req.body register')
     console.log(req.body)
   }
 
@@ -61,12 +61,6 @@ export const register = async (req, res, next) => {
 }
 
 export const doRegister = async (req, res, next) => {
-  if (req.body) {
-    console.log('req.body')
-    console.log(req.body)
-  }
-  console.log('doRegister')
-
   let pageData = {
     title: 'Register',
   }
@@ -83,14 +77,9 @@ export const doRegister = async (req, res, next) => {
     const userExists = await User.findOne({ email: username })
     if (userExists) {
       throw new Error('User already exists')
-      // // pageData.error = { message: 'User already exists' };
-
-      // pageData.error = { message: 'User already exists' }
-      // return render(req, res, 'register', pageData)
     }
 
     let user = await User.create(newUser)
-    let token = createJWT(user._id)
 
     req.session.isLoggedIn = true
     req.session.user = user
@@ -107,7 +96,6 @@ export const onboarding = async (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.redirect('/login')
   }
-
   const pageData = {
     title: 'Onboarding',
   }
@@ -128,18 +116,12 @@ export const doOnboarding = async (req, res, next) => {
     console.log('doOnboarding')
     const { _id } = req.session.user
 
-    console.log('req.user')
-    console.log(req.user)
 
     let { avatar, bio } = req.body
 
     const thisUser = await User.findByIdAndUpdate(_id, { bio: bio, avatar: avatar }, { new: true })
     await thisUser.save()
-    // await addUserInfo(thisUser._id, avatar, bio)
-    // req.session.user = thisUser
-    console.log('thisUser')
-    console.log(thisUser)
-
+    
     req.session.user = thisUser
 
     res.redirect('/chat')
@@ -154,10 +136,6 @@ export const doOnboarding = async (req, res, next) => {
 export const login = async (req, res, next) => {
   if (req.session.isLoggedIn) {
     return res.redirect('/chat')
-  }
-  if (req.params) {
-    console.log('req.params')
-    console.log(req.params)
   }
   if (req.session) {
     console.log('session:', req.session)
@@ -191,13 +169,6 @@ export const isLoggedIn = async (req, res, next) => {
   if (req.session.user || req.session.isLoggedIn) {
     next()
   } else {
-    console.log('req.route.path')
-    console.log(req.route.path)
-    // const query = queryString.stringify({
-    //   url: req.originalUrl,
-    // })
-    //save the route/url the user wants to visit en make a querystring
-    // sends the user to the login page and adds the orignal url as query
     return res.status(403).redirect('/login?' + new URLSearchParams({ url: req.originalUrl }))
   }
 }
@@ -213,11 +184,6 @@ export const doLogin = async (req, res, next) => {
   console.log(req.body)
   try {
     const user = await User.login(username, password)
-    let token = createJWT(user._id)
-    console.log('user token')
-    console.log(token)
-    console.log('user')
-    console.log(user)
 
     if (user) {
       req.session.isLoggedIn = true
@@ -230,20 +196,38 @@ export const doLogin = async (req, res, next) => {
     // res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
     // req.session.isLoggedIn = true
     // req.session.user = user
-
     if (!user.bio) {
       return res.status(201).redirect('/register/onboarding')
     }
-
     res.status(201).redirect(req.query.url || '/chat')
-
-    // res.redirect('/')
   } catch (error) {
     let errors = alertError(error)
 
     pageData.error = errors
     return render(req, res, 'login', pageData)
 
-    // res.status(400).json({ errors })
+  }
+}
+
+export const logout = async (req, res) => {
+  req.session.isLoggedIn = false
+  req.session.user = null
+  app.locals.isLoggedIn = false
+  app.locals.user = null
+
+  return res.clearCookie('session').redirect('/login')
+}
+
+
+
+export const profile = async (req, res, next) => {
+  const pageData = {
+    title: 'Profile',
+  }
+  try {
+    return render(req, res, 'profile', pageData)
+  } catch (error) {
+    console.log(error)
+    next(error)
   }
 }
