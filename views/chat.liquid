@@ -80,14 +80,27 @@
       </ul>
     </div>
 </section>
+
+
 <section class="chat">
-   <div class="chat-container"></div>
+{% if chat %}
+  <div class="chat-container"></div>
   <div>
     <form action="">
       <input type="text"><button>send</button>
-
+  
     </form>
-  </div> 
+  </div>
+{% else %}
+<div class="chat-container">
+<p>No chat Selected</p>
+
+</div>
+<div>
+{% endif %}
+
+
+  
 </section>
 </div>
 {% endblock %}

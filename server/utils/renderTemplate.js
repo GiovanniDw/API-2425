@@ -28,11 +28,7 @@ export async function render(req, res, view, data) {
     locals = req.locals
   }
 
-  if (req.session) {
-    console.log('session:', req.session)
-    console.log('session:req.session.user')
-    console.log(req.session.user)
-  }
+
 
   const templateData = {
     NODE_ENV: app.locals.node || 'production',
