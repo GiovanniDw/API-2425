@@ -1,5 +1,5 @@
+<!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,7 +10,7 @@
     <script type="module" src="http://localhost:5173/@vite/client" defer></script>
     <script type="module" src="http://localhost:5173/src/main.js" defer></script>
     {% else %}
-
+    
     <link rel="stylesheet" href="/index.css" />
     <script src="/index.js" defer></script>
     {% endif %}
@@ -24,16 +24,23 @@
 
   <body>
     <header>
+      <div class="header-start">
+    {% if room %}
+      
+        <a class="back-button" href="/chat">
+      <span class="icon">arrow_back_ios</span>back
+      </a>
+    {% endif %}
 
+      </div>
+      <div class="header-center">
+        <h1 class="h1">{{ title }}</h1>
+      </div>
+      <div class="header-end"></div>
+    
     </header>
     <main>{% block content %} {% endblock %}</main>
-    <footer>Deze footer staat op elke pagina
-
-      {% if app %}
-      {{ app }}
-      {% endif %}
-
-    </footer>
+  
 {% render 'components/nav.liquid', user: user %}
   </body>
 

@@ -97,7 +97,7 @@ export const getChatRoom = async (req, res, next) => {
   console.log('room:', room)
   let pageData = {
     title: room.name,
-    room: roomsList[id],
+    room: room,
     rooms: roomsList,
     slug: String(id)
   }

@@ -1,3 +1,8 @@
+body {
+height: 100svh;
+
+}
+
 header {
   position: sticky;
   top: 0;
@@ -14,7 +19,8 @@ footer {
 }
 
 main {
-  min-height: 80svh;
+  /* min-height: 80svh; */
+  height: calc(100svh - 40px);
 }
 
 nav {
@@ -31,4 +37,43 @@ nav {
   align-items: center;
   text-decoration: none;
   color: var(--color-black);
+}
+
+.main-nav.hidden {
+opacity: 0;
+display: none;
+
+}
+
+header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: 40px;
+}
+
+.back-button {
+  font-size: .8rem;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 0.5rem;
+  text-decoration: none;
+
+}
+
+.back-button a .icon {
+  font-size: .75em;
+}
+
+
+.icon-w-text {
+display: flex;
+align-items: center;
+}
+
+
+#room-list a {
+  padding: 1em;
+
+  text-decoration: none;
 }
