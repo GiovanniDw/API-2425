@@ -13,7 +13,7 @@ import nextSession from 'next-session'
 const getSession = nextSession()
 
 import { renderTemplate, render } from './utils/renderTemplate.js'
-import { data } from './data.js'
+
 import {
   doLogin,
   doRegister,
