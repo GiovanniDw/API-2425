@@ -81,6 +81,9 @@ export const createChatRoom = async (req, res, next) => {
       description: description,
     }
     let room = await Room.create(newRoom)
+  
+    res.redirect(`/chat/${room._id}`)
+    // return res.status(201).json(room)
   } catch (err) {
     next(err)
   }

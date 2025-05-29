@@ -21,7 +21,7 @@ export default defineConfig({
     emptyOutDir: false,
     outDir: 'dist',
     rollupOptions: {
-      input: path.resolve(__dirname, 'src/index.js'),
+      input: path.resolve(__dirname, 'src/main.js'),
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: '[name].js',
