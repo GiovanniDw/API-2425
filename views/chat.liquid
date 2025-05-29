@@ -77,23 +77,23 @@
 
 
   <section class="chat">
-
     {% if room.id %}
     <div class="chat-container"></div>
     <div>
-      <form action="">
+      <form id="chat-form">
+        <input type="hidden" name="room_id" value="{{ room.id }}">
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        <input type="hidden" name="username" value="{{ user.username }}">
         <input type="text"><button>send</button>
-
       </form>
     </div>
     {% else %}
     <div class="chat-container">
       <p>{{room}}</p>
       <p>No chat Selected</p>
-
     </div>
-    <div>
-      {% endif %}
+
+    {% endif %}
 
 
 

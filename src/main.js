@@ -4,9 +4,6 @@ import './main.css'
 
 console.log('Hello, world!')
 
-
-
 if (window.location.pathname.startsWith('/chat')) {
-import('./components/chat.js')
+  import('./components/chat.js')
 }
- 

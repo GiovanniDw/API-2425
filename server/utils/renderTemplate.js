@@ -28,8 +28,6 @@ export async function render(req, res, view, data) {
     locals = req.locals
   }
 
-
-
   const templateData = {
     NODE_ENV: app.locals.node || 'production',
     app: Object.values(app.locals),

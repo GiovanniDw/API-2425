@@ -16,6 +16,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './server'),
     },
   },
+  server: {
+    cors: {
+      // the origin you will be accessing via browser
+      origin: 'http://192.168.1.124:3000',
+    },
+  },
   build: {
     minify: false,
     emptyOutDir: false,

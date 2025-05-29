@@ -133,7 +133,6 @@ app.get('/chat', isLoggedIn, chat)
 app.post('/chat/create-room', isLoggedIn, createChatRoom)
 app.get('/chat/:id', isLoggedIn, getChatRoom)
 
-
 // app.get('/plant/:id/', async (req, res) => {
 //   const id = req.params.id
 //   const item = data[id]
@@ -157,7 +156,7 @@ app.use((err, req, res, next) => {
         status: err.status,
       },
     }
-  return render(req, res, 'error', pageData)
+    return render(req, res, 'error', pageData)
   }
 })
 

@@ -116,12 +116,11 @@ export const doOnboarding = async (req, res, next) => {
     console.log('doOnboarding')
     const { _id } = req.session.user
 
-
     let { avatar, bio } = req.body
 
     const thisUser = await User.findByIdAndUpdate(_id, { bio: bio, avatar: avatar }, { new: true })
     await thisUser.save()
-    
+
     req.session.user = thisUser
 
     res.redirect('/chat')
@@ -205,7 +204,6 @@ export const doLogin = async (req, res, next) => {
 
     pageData.error = errors
     return render(req, res, 'login', pageData)
-
   }
 }
 
@@ -217,8 +215,6 @@ export const logout = async (req, res) => {
 
   return res.clearCookie('session').redirect('/login')
 }
-
-
 
 export const profile = async (req, res, next) => {
   const pageData = {

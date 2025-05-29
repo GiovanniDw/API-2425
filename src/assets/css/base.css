@@ -1,6 +1,5 @@
 body {
-height: 100svh;
-
+  height: 100svh;
 }
 
 header {
@@ -40,9 +39,8 @@ nav {
 }
 
 .main-nav.hidden {
-opacity: 0;
-display: none;
-
+  opacity: 0;
+  display: none;
 }
 
 header {
@@ -52,25 +50,22 @@ header {
 }
 
 .back-button {
-  font-size: .8rem;
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: left;
   padding: 0.5rem;
   text-decoration: none;
-
 }
 
 .back-button a .icon {
-  font-size: .75em;
+  font-size: 0.75em;
 }
-
 
 .icon-w-text {
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 }
-
 
 #room-list a {
   padding: 1em;
