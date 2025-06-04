@@ -29,6 +29,8 @@ export async function render(req, res, view, data) {
   }
 
   const templateData = {
+    BASE_URL: process.env.BASE_URL || 'http://localhost:3000',
+    CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
     NODE_ENV: app.locals.node || 'production',
     app: Object.values(app.locals),
     locals: Object.values(locals),

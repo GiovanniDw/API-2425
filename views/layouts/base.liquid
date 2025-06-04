@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
   <head>
@@ -26,7 +27,9 @@
     <header>
 
     </header>
-    <main>{% block content %} {% endblock %}</main>
+    <main>
+      {% block content %} {% endblock %}
+    </main>
     <footer>Deze footer staat op elke pagina
 
       {% if app %}
@@ -34,7 +37,7 @@
       {% endif %}
 
     </footer>
-  {% render 'components/nav.liquid' user: user  %}
+    {% render 'components/nav.liquid' user: user  %}
   </body>
 
 </html>
