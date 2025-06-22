@@ -4,18 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {% block head %}
-    <title>{{ title }}</title>
+      <title>{{ title }}</title>
     {% endblock %}
     {% if NODE_ENV == "development" %}
-    <script type="module" src="http://192.168.1.124:5173/@vite/client" defer></script>
-    <script type="module" src="http://192.168.1.124:5173/src/main.js" defer></script>
+      <script type="module" src="{{ CLIENT_URL }}/@vite/client" defer></script>
+      <script type="module" src="{{ CLIENT_URL }}/src/main.js" defer></script>
     {% else %}
     
-    <link rel="stylesheet" href="/index.css" />
-    <script src="/index.js" defer></script>
+      <link rel="stylesheet" href="/index.css" />
+      <script src="/index.js" defer></script>
     {% endif %}
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
+      <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" />
     {% block styles %}
     {% endblock %}
     {% block scripts %}

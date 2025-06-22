@@ -1,6 +1,8 @@
 /* global styles */
-@import '~/assets/css/colors.css';
 @import '~/assets/css/reset.css';
+
+@import '~/assets/css/variables.css';
+
 @import '~/assets/css/typography.css';
 @import '~/assets/css/form.css';
 @import '~/assets/css/chat.css';
