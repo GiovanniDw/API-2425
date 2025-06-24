@@ -1,11 +1,11 @@
 {% layout "layouts/chat.liquid" %}
 {% block content %}
 
-<div class="split">
+<div class="chat-container">
   <section class="rooms">
-    <div id="rooms">
-      <button id="create-room">
-        Create A Room
+    <div class="create-room-container">
+      <button id="create-room-button" class="btn-icon">
+        <span class="icon">chat_add_on</span>
       </button>
       <dialog id="create-room-dialog">
         <header>
@@ -29,20 +29,25 @@
               <option value="home"><span class="icon home-icon">home</span>Home</option>
               <option value="chat"><span class="icon chat-icon">chat</span>Chat</option>
               <option value="group"><span class="icon group-icon">group</span>Group</option>
-              <option value="settings"><span class="icon settings-icon">settings</span>Settings</option>
-              <option value="favorite"><span class="icon favorite-icon">favorite</span>Favorite</option>
+              <option value="settings"><span class="icon settings-icon">settings</span>Settings
+              </option>
+              <option value="favorite"><span class="icon favorite-icon">favorite</span>Favorite
+              </option>
               <option value="forum"><span class="icon forum-icon">forum</span>Forum</option>
-              <option value="emoji_emotions"><span class="icon emoji-emotions-icon">emoji_emotions</span>Fun
+              <option value="emoji_emotions"><span
+                      class="icon emoji-emotions-icon">emoji_emotions</span>Fun
               </option>
               <option value="public"><span class="icon public-icon">public</span>Public</option>
               <option value="lock"><span class="icon lock-icon">lock</span>Private</option>
               <option value="star"><span class="icon star-icon">star</span>Starred</option>
-              <option value="lightbulb"><span class="icon lightbulb-icon">lightbulb</span>Ideas</option>
+              <option value="lightbulb"><span class="icon lightbulb-icon">lightbulb</span>Ideas
+              </option>
               <option value="work"><span class="icon work-icon">work</span>Work</option>
               <option value="school"><span class="icon school-icon">school</span>School</option>
-              <option value="travel_explore"><span class="icon travel-explore-icon">travel_explore</span>Travel
+              <option value="travel_explore"><span
+                      class="icon travel-explore-icon">travel_explore</span>Travel
               </option>
-              
+
               <!-- Add more Material Icons as needed -->
             </select>
             <span id="icon-preview" class="icon">home</span>
@@ -57,50 +62,53 @@
           <button id="cancel">Cancel</button>
         </form>
       </dialog>
-      <div id="room-list">
-        <ul>
-          {% for chat in rooms %}
-          <li>
-            {% if slug %}
-            {% if chat.id == slug %}
-            <a class="active icon-w-text" href="/chat/{{ chat.id }}">
-              <span class="icon">{{ chat.icon }}</span>
-              <span class="room-name">{{ chat.name }}</span>
-            </a>
-            {% else %}
-            <a class="icon-w-text" href="/chat/{{ chat.id }}">
-              <span class="icon">{{ chat.icon }}</span>
-              <span class="room-name">{{ chat.name }}</span>
-            </a>
-            {% endif %}
-            {% else %}
-            <a class="icon-w-text" href="/chat/{{ chat.id }}">
-              <span class="icon">{{ chat.icon }}</span>
-              <span class="room-name">{{ chat.name }}</span>
-            </a>
-            {% endif %}
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
+    </div>
+    <div id="room-list">
+      <ul>
+        {% for chat in rooms %}
+        <li>
+          {% if slug %}
+          {% if chat.id == slug %}
+          <a class="active icon-w-text" href="/chat/{{ chat.id }}">
+            <span class="icon">{{ chat.icon }}</span>
+            <span class="room-name">{{ chat.name }}</span>
+          </a>
+          {% else %}
+          <a class="icon-w-text" href="/chat/{{ chat.id }}">
+            <span class="icon">{{ chat.icon }}</span>
+            <span class="room-name">{{ chat.name }}</span>
+          </a>
+          {% endif %}
+          {% else %}
+          <a class="icon-w-text" href="/chat/{{ chat.id }}">
+            <span class="icon">{{ chat.icon }}</span>
+            <span class="room-name">{{ chat.name }}</span>
+          </a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+
   </section>
 
 
   <section class="chat">
     {% if room.id %}
-    <div class="chat-container"></div>
+    <div class="chat-messages"></div>
     <div>
       <form id="chat-form">
         <input type="hidden" name="room_id" value="{{ room.id }}">
         <input type="hidden" name="user_id" value="{{ user.id }}">
         <input type="hidden" name="username" value="{{ user.username }}">
         <input type="text">
-        
-        <button>send</button>
+
+        <button type="submit" id="chat-send-btn" class="btn-icon">
+          <span class="icon">send</span>
+        </button>
       </form>
     </div>
     {% else %}
-    <div class="chat-container">
+    <div class="chat-messages">
       <p>{{room}}</p>
       <p>No chat Selected</p>
     </div>
